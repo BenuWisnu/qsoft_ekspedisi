@@ -88,7 +88,7 @@ class Ekspedisi extends CI_Controller
                     "Cabang" => $this->session->userdata('Cabang'),
                     "UserTambah" => $this->session->userdata('KodePemakai')
                 );
-                
+                 
         $this->m_ekspedisi->update($no_nota, $data);
         $this->session->set_flashdata('success', "Berhasil");
         redirect('ekspedisi/edit/'.$no_nota);

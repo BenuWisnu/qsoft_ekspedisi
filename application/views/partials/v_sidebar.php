@@ -36,18 +36,13 @@
                     <span class="pcoded-badge label label-success">NEW</span>
                 </a>
             </li>
-
+ 
         </ul>
       
         <div class="pcoded-navigatio-lavel">Menu Utama</div>
         <ul class="pcoded-item pcoded-left-item">
             <?php if ($level == "ADMIN") { ?>
-            <li class="">
-                <a href="<?= base_url("pelanggan"); ?>">
-                    <span class="pcoded-micon"><i class="feather icon-user-plus"></i></span>
-                    <span class="pcoded-mtext">Tambah Pelanggan</span>
-                </a>
-            </li>
+        
             <?php } ?>
             <li class="">
                 <a href="<?= base_url("ekspedisi"); ?>"> 
@@ -55,12 +50,7 @@
                     <span class="pcoded-mtext">Ekspedisi</span>
                 </a>
             </li>
-            <li class="">
-                <a href="<?= base_url("manifest"); ?>"> 
-                    <span class="pcoded-micon"><i class="feather icon-file-text"></i></span>
-                    <span class="pcoded-mtext">Manifest</span>
-                </a>
-            </li>
+     
             <li class="">
                 <a href="<?= base_url("invoice"); ?>"> 
                     <span class="pcoded-micon"><i class="feather icon-file-text"></i></span>

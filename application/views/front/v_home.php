@@ -16,7 +16,7 @@
 
     
 
-      <div class="container" data-aos="fade-up">
+      <div class="container" data-aos="fade-up"> 
 
           
           <header class="section-header">

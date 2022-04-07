@@ -2,8 +2,9 @@
 
 class M_pembayaran extends CI_Model {
 
-    public $id = "NoBayar";
-    public $table = "invoicebayardtl";
+    public $id = "NoNota";
+    public $table = "invoicebayar";
+    public $table_detail = "invoicebayardtl";
     public $view = "view_pembayaran";
 
     public function __construct()
@@ -15,6 +16,11 @@ class M_pembayaran extends CI_Model {
         return $this->db->get($this->view)->result();
     }
 
+    public function get_all_detail($id) {
+        $this->db->where($this->id, $id);
+        return $this->db->get($this->table_detail)->result();
+    }
+
     public function get_by_id($id) {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->result();
@@ -22,6 +28,10 @@ class M_pembayaran extends CI_Model {
 
     public function insert($data) {
         $this->db->insert($this->table, $data);
+    }
+
+    public function insert_detail($data) {
+        $this->db->insert($this->table_detail, $data);
     }
 
     public function update($id, $data) {
@@ -38,16 +48,3 @@ class M_pembayaran extends CI_Model {
 }
 
 ?>
-<!-- 
-NAMA FIELD
-Tanggal,
-NoBayar,
-AkunBayar,
-TanggalTambah,
-UserTambah,
-Keterangan,
-Bayar,
-NoInvoice,
-NoNota,
-VendorCode,
-NamaVendor, -->

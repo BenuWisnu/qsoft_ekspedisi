@@ -12,7 +12,19 @@
 
 							<div class="card">
 								<div class="card-block">
-							
+									<p>Silahkan simpan data <code> data </code> terlebih dahulu sebelum menambah nota.
+									</p>
+									<!-- Modal static-->
+									<button type="button" class="btn btn-success btn-round waves-effect disabled"
+										data-toggle="modal" data-target="#"><i class="feather icon-plus"></i> Tambahkan
+										Nota</button>
+
+
+
+									<div class="card-header">
+										<h5>Tambah Data Ekspedisi</h5>
+									</div>
+
 									<div class="card-block">
 
 
@@ -44,22 +56,26 @@
 											</div>
 
 
+
 											<div class="form-group row">
 												<label class="col-sm-2 col-form-label">Kode Vendor</label>
 												<div class="col-sm-3">
 													<input type="text" name="kode_vendor" id="kode_vendor"
 														class="form-control form-control-round"
-														placeholder="Kode Vendor" onkeyup="get_kode_vendor()">
+														placeholder="Kode Vendor" value="<?= $data['VendorCode']; ?>"
+														onkeyup="get_kode_vendor()">
 												</div>
 												<div class="col-sm-3">
 													<input type="text" name="vendor" id="vendor"
 														class="form-control form-control-round" readonly
-														placeholder="Nama Vendor" onkeyup="get_nama_vendor()">
+														placeholder="Nama Vendor"
+														value="<?= get_kode_table("vendor", "NamaVendor", "KodeVendor", $data['VendorCode']); ?>">
 												</div>
 												<div class="col-sm-4">
 													<input type="text" name="alamat" id="alamat"
 														class="form-control form-control-round" readonly
-														placeholder="Alamat Vendor">
+														placeholder="Alamat Vendor"
+														value="<?= get_kode_table("vendor", "Alamat", "KodeVendor", $data['VendorCode']); ?>">
 												</div>
 											</div>
 
@@ -81,6 +97,50 @@
 								</div>
 							</div>
 
+							<div class="card">
+								<div class="card-block">
+									<div class="dt-responsive table-responsive">
+										<table id="cbtn-selectors" class="table table-striped table-bordered nowrap">
+											<thead>
+												<tr>
+													<th>No.</th>
+													<th>No. Bayar</th>
+													<th>No. Invoice</th>
+													<th>Bayar</th>
+													<th>Aksi</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php
+																							$no = 1;
+																							foreach ($data_pembayaran_detail as $data_detail) {
+																						
+																								?>
+												<tr>
+													<td><?= $no++; ?></td>
+													<td><?= $data_detail->NoBayar; ?>
+													</td>
+													<td><?= $data_detail->NoInvoice; ?>
+													</td>
+													<td><?= $data_detail->Bayar; ?>
+													</td>
+													<td>
+														<button class="btn btn-danger btn-round text-white f-12"
+															onclick="delete_item_nota(<?= $data_detail->NoBayar; ?>)">
+															<i class="feather icon-trash"></i>
+															Hapus</button>
+													</td>
+												</tr>
+
+												<?php
+																												}
+
+																												?>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- Page body end -->
 					</div>

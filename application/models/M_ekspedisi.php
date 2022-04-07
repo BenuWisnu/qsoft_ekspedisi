@@ -20,7 +20,7 @@ class M_ekspedisi extends CI_Model {
 
     public function get_all_detail($id) {
         $this->db->where($this->id, $id);
-        return $this->db->get($this->table_detail)->result();
+        return $this->db->get($this->table_detail)->result(); 
     }
 
     public function get_all_tagihan_ekspedisi($no_invoice, $kode_vendor) {
