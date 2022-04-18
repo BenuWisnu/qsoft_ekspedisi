@@ -27,7 +27,7 @@
 									</p>
 									<button type="button" class="btn btn-success btn-round waves-effect"
 										data-toggle="modal" data-target="#default-Modal"><i
-											class="feather icon-plus"></i> Tambahkan Nota</button>
+											class="feather icon-plus"></i> Tambahkan Detail</button>
 								</div>
 							</div>
 							<div class="card">
@@ -38,14 +38,14 @@
 
 
 									<div class="card-header">
-										<h5>Tambah Data Ekspedisi</h5>
+										<h5>Tambah Data Manifest</h5>
 									</div>
 
 									<div class="modal fade" id="default-Modal" tabindex="-1" role="dialog">
 										<div class="modal-dialog modal-lg" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h4 class="modal-title">Tambah Nota</h4>
+													<h4 class="modal-title">Tambah TTB</h4>
 													<button type="button" class="close" data-dismiss="modal"
 														aria-label="Close">
 														<span aria-hidden="true">&times;</span>
@@ -64,7 +64,7 @@
 																	</li>
 																	<li class="nav-item">
 																		<a class="nav-link" data-toggle="tab"
-																			href="#profile1" role="tab">Tambah Nota</a>
+																			href="#profile1" role="tab">Tambah TTB</a>
 																	</li>
 
 																</ul>
@@ -188,16 +188,16 @@
 																			<div class="form-group row">
 																				<label
 																					class="col-sm-3 col-form-label">Tujuan</label>
-																				<div class="col-sm-4">
+																				<div class="col-sm-3">
 																					<input type="text" id="tujuan_modal"
-																						name="tujuan_modal" required readonly
+																						name="tujuan_modal" required
 																						class="form-control form-control-round"
 																						placeholder="Tujuan" value="">
 																				</div>
-																				<div class="col-sm-5">
+																				<div class="col-sm-6">
 																					<input type="text"
 																						id="alamat_tujuan_modal"
-																						name="alamat_tujuan_modal"  readonly
+																						name="alamat_tujuan_modal" 
 																						class="form-control form-control-round"
 																						placeholder="Alamat Tujuan"
 																						value="">
@@ -232,7 +232,7 @@
 																					class="col-sm-3 col-form-label">Jenis
 																					Harga</label>
 																				<div class="col-sm-9">
-																					<select name="jenis_harga" onchange="get_jenis_harga(this)"
+																					<select name="jenis_harga" onchange="get_jenis_harga()"
 																						id="jenis_harga" 
 																						class="form-control form-control-round">
 																						<option value="Kg">KG</option>
@@ -286,7 +286,7 @@
 																			<div class="form-group row">
 																				<label
 																					class="col-sm-3 col-form-label">Banyak</label>
-																				<div class="col-sm-4">
+																				<div class="col-sm-2">
 																					<input type="text" id="banyak"
 																						name="banyak" required
 																						onkeyup="hitung_banyak()"
@@ -294,12 +294,12 @@
 																						placeholder="Banyak" value="">
 																				</div>
 																				<div
-																					class="col-md-5 col-sm-4 col-xs-12">
+																					class="col-md-7 col-sm-4 col-xs-12">
 																					<div
 																						class="input-group input-group-secondary input-group">
 																						<span
 																							class="input-group-addon bg-black"
-																							style="width: 80px"
+																							style="width: 60px"
 																							id="span_berat"
 																							min="0">Rp.</span>
 																						<input type="number"
@@ -310,6 +310,11 @@
 																							placeholder="Harga Satuan"
 																							maxlength="30" value=""
 																							oninput="numberOnly(this.id);javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+																						<span
+																							class="input-group-addon bg-black"
+																							style="width: 180px"
+																							id="span_harga_satuan_modal"
+																							min="0"></span>
 
 																					</div>
 																				</div>
@@ -743,6 +748,7 @@
 				});
 
 				get_detail_pelanggan();
+				get_detail_harga();
 
 			}
 
@@ -790,6 +796,25 @@
 			}
 
 			function get_detail_pelanggan() {
+				var kode = $("#pelanggan").val();
+				if (kode != "") {
+					$.ajax({
+						url: "<?php echo base_url()?>index.php/pelanggan/get_detail_pelanggan",
+						data: "kode=" + kode,
+						success: function (data) {
+							var json = data,
+								obj = JSON.parse(json);
+							$('#tujuan_modal').val(obj.Kota); 
+							$('#alamat_tujuan_modal').val(obj.Alamat); 
+
+
+						}
+					});
+				}
+
+			}
+
+			function get_detail_harga() {
 				var kode = $("#kode_vendor").val();
 				if (kode != "") {
 					$.ajax({
@@ -798,8 +823,6 @@
 						success: function (data) {
 							var json = data,
 								obj = JSON.parse(json);
-							$('#tujuan_modal').val(obj.Kode);
-							$('#alamat_tujuan_modal').val(obj.Tujuan);
 							harga_satuan = obj.HargaSatuan;
 							harga_kg = obj.HargaPerKg;
 							harga_pickup = obj.CarterPickup;
@@ -809,11 +832,15 @@
 
 
 							document.getElementById('harga_satuan').selectedIndex = 0;
+							get_jenis_harga();
+							
+
 
 
 						}
 					});
 				}
+
 
 			}
 
@@ -843,25 +870,28 @@
 
 			}
 
+			function get_jenis_harga() {
+				var val = document.getElementById("jenis_harga").value;
+				console.log(jenis_harga);
 
-			function get_jenis_harga(a) {
-				var val = (a.value || a.options[a.selectedIndex].value); //crossbrowser solution =)
 				if (val == 'Kg') {
 					document.getElementById('banyak').disabled = true;
 					document.getElementById('berat').disabled = false;
 					$('#harga_satuan').val(parseInt(harga_kg));
+					document.getElementById('span_harga_satuan_modal').innerHTML = harga_kg;
+
 				} else if (val == 'Pickup') {
 					document.getElementById('banyak').disabled = false;
-					document.getElementById('berat').disabled = true;
 					$('#harga_satuan').val(parseInt(harga_pickup));
+					document.getElementById('span_harga_satuan_modal').innerHTML = harga_pickup;
 				} else if (val == 'TS') {
 					document.getElementById('banyak').disabled = false;
-					document.getElementById('berat').disabled = true;
 					$('#harga_satuan').val(parseInt(harga_ts));
+					document.getElementById('span_harga_satuan_modal').innerHTML = harga_ts;
 				} else if (val == 'Fuso') {
 					document.getElementById('banyak').disabled = false;
-					document.getElementById('berat').disabled = true;
 					$('#harga_satuan').val(parseInt(harga_fuso));
+					document.getElementById('span_harga_satuan_modal').innerHTML = harga_fuso;
 				}
 
 				console.log(parseInt(harga_kg));

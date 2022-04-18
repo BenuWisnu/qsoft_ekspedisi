@@ -67,7 +67,7 @@
 
 								<div class="card-header">
 
-									<h5>Edit Data Pelanggan</h5>  
+									<h5>Tambah Data Sopir</h5> 
 
 
 								</div> 
@@ -75,73 +75,73 @@
 
 								<div class="card-block">
 
-									<form action="<?php echo base_url('pelanggan/update/'.$data['KodePelanggan']); ?>" method="post" enctype="multipart/form-data">
+									<form action="<?php echo base_url('armada/create'); ?>" method="post" enctype="multipart/form-data">
 
 						
                                         <div class="form-group row">
-											<label class="col-sm-2 col-form-label">Kode Pelanggan</label>
+											<label class="col-sm-2 col-form-label">No. Kendaraan</label>
 											<div class="col-sm-10">
-												<input type="text" name="kode_pelanggan" id="kode_pelanggan" required class="form-control form-control-round"
-													placeholder="Kode Pelanggan" readonly value="<?php echo $data['KodePelanggan']; ?>">
+												<input type="text" name="no_kendaraan" id="no_kendaraan" required class="form-control form-control-round"
+													placeholder="No. Kendaraan" value="">
 											</div>
 										</div>
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Nama Pelanggan</label>
+											<label class="col-sm-2 col-form-label">Jenis</label>
 											<div class="col-sm-10">
-												<input type="text" name="nama_pelanggan" required class="form-control form-control-round"
-													placeholder="Nama Pelanggan" value="<?php echo $data['NamaPelanggan']; ?>">
+												<input type="text" name="jenis" required class="form-control form-control-round"
+													placeholder="Jenis">
 											</div>
 										</div>
 
-								
+				
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Vendor</label>
+											<label class="col-sm-2 col-form-label">Merek</label>
 											<div class="col-sm-10">
-												<input type="text" name="vendor" id="vendor" required class="form-control form-control-round"
-													placeholder="Vendor" onkeyup="get_vendor()"
-													value="<?= get_kode_table("vendor", "NamaVendor", "KodeVendor", $data['KodeVendor']); ?>">
-											</div>
-										</div>
-
-										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Kota</label>
-											<div class="col-sm-10">
-												<input type="text" name="kota" required class="form-control form-control-round"
-													placeholder="Kota" value="<?php echo $data['Kota']; ?>">
-											</div>
-										</div>
-
-
-										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Alamat</label>
-											<div class="col-sm-10">
-												<input type="text" name="alamat" required class="form-control form-control-round"
-													placeholder="Alamat" value="<?php echo $data['Alamat']; ?>">
+												<input type="text" name="merek" required class="form-control form-control-round"
+													placeholder="merek">
 											</div>
 										</div>
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">No. Telpon</label>
+											<label class="col-sm-2 col-form-label">Tahun Pembuatan</label>
 											<div class="col-sm-10">
-												<input type="text" name="no_telpon"  class="form-control form-control-round"
-													placeholder="No. Telpon" value="<?php echo $data['NoTelpon']; ?>">
+												<input type="number" name="tahun_pembuatan" required class="form-control form-control-round"
+													placeholder="Tahun Pembuatan">
 											</div>
 										</div>
 
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Jenis Barang</label>
+											<label class="col-sm-2 col-form-label">Tanggal Pembelian</label>
 											<div class="col-sm-10">
-												<input type="text" name="jenis_barang"  class="form-control form-control-round"
-													placeholder="Jenis Barang" value="<?php echo $data['JenisBarang']; ?>">
+												<input type="date" name="tanggal_pembelian" required class="form-control form-control-round"
+													placeholder="">
+											</div>
+										</div>
+
+
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">Sopir</label>
+											<div class="col-sm-10">
+												<input type="text" name="sopir" id="sopir" required class="form-control form-control-round"
+													placeholder="Sopir" onkeyup="get_sopir()">
+											</div>
+										</div>
+
+
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">Hp Sopir</label>
+											<div class="col-sm-10">
+												<input type="text" name="hp_sopir" id="hp_sopir" required class="form-control form-control-round"
+													placeholder="Hp Sopir">
 											</div>
 										</div>
                                         
 										<div class="j-footer">
 											<button type="submit" class="btn btn-success btn-round"><i class="feather icon-plus"></i>Simpan Data</button>
-											<a href="<?= base_url('pelanggan'); ?>" class="btn btn-danger btn-round"><i class="feather icon-x"></i>Batalkan</a>
+											<a href="<?= base_url('sopir'); ?>" class="btn btn-danger btn-round"><i class="feather icon-x"></i>Batalkan</a>
 										</div>
 
 									</form>
@@ -165,31 +165,41 @@
 <script type="text/javascript">
 
 
-    function get_cabang() {
-		//autocomplete
-		$("#cabang").autocomplete({
-			source: "<?php echo base_url() ?>index.php/manifest/get_cabang",  
-			minLength: 1
-		});
-	}
-
-    function get_rupiah(val) {
-			var numb = val;
-			const format = numb.toString().split('').reverse().join('');
-			const convert = format.match(/\d{1,3}/g);
-			const rupiah = 'Rp ' + convert.join('.').split('').reverse().join('')
-			return rupiah;
-	}
-
-	function get_vendor() {
+function get_sopir() {
 				//autocomplete
-				$("#vendor").autocomplete({
-					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_vendor",
+				$("#sopir").autocomplete({
+					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_sopir",
 					minLength: 1
 				});
 
-				//get_detail_autofill();
+				get_detail_sopir();
 			}
 
+            function get_detail_sopir() {
+				var kode = $("#sopir").val();
+				console.log(kode);
+				if (kode != "") {
+					$.ajax({
+						url: "<?php echo base_url()?>index.php/sopir/get_detail_sopir",
+						data: "kode=" + kode,
+						success: function (data) {
+							var json = data,
+								obj = JSON.parse(json);
+							$('#hp_sopir').val(obj.NoTelpon);
+
+						}
+					});
+				} else {
+					$('#hp_sopir').val("");
+				}
+
+			}
+    
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
 
 </script>

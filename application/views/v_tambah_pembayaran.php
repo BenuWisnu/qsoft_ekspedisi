@@ -12,7 +12,7 @@
 
 							<div class="card">
 								<div class="card-block">
-							
+
 									<div class="card-block">
 
 
@@ -43,25 +43,35 @@
 												</div>
 											</div>
 
+											<!-- <input type="text" name="tanggal" id="tanggal"
+														class="form-control form-control-round date"
+														data-mask="99/99/9999" placeholder="Invoice Date" 
+														value="<?= ((int) substr(date("d/m/Y"), 0, 2) + 10).substr(date("d/m/Y"), 3, 8); ?>"> -->
+
 
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Kode Vendor</label>
-												<div class="col-sm-3">
-													<input type="text" name="kode_vendor" id="kode_vendor"
-														class="form-control form-control-round"
-														placeholder="Kode Vendor" onkeyup="get_kode_vendor()">
-												</div>
+												<label class="col-sm-2 col-form-label">Nama Vendor</label>
 												<div class="col-sm-3">
 													<input type="text" name="vendor" id="vendor"
-														class="form-control form-control-round" readonly
-														placeholder="Nama Vendor" onkeyup="get_nama_vendor()">
+														class="form-control form-control-round"
+														placeholder="Nama Vendor" onkeyup="get_nama_vendor()"
+														value="">
 												</div>
+												<div class="col-sm-3">
+													<input type="text" name="kode_vendor" id="kode_vendor"
+														class="form-control form-control-round" readonly
+														placeholder="Kode Vendor" onkeyup="get_kode_vendor()"
+														value="">
+												</div>
+
 												<div class="col-sm-4">
 													<input type="text" name="alamat" id="alamat"
 														class="form-control form-control-round" readonly
-														placeholder="Alamat Vendor">
+														placeholder="Alamat Vendor"
+														value="">
 												</div>
 											</div>
+
 
 
 
@@ -98,16 +108,6 @@
 			});
 
 
-			function get_cabang() {
-				//autocomplete
-				$("#cabang").autocomplete({
-					source: "<?php echo base_url() ?>index.php/manifest/get_cabang",
-					minLength: 1
-				});
-
-				//get_detail_autofill();
-			}
-
 			function get_no_nota() {
 				//autocomplete
 				$("#no_nota").autocomplete({
@@ -139,78 +139,26 @@
 			}
 
 
-			function get_vendor() {
+			function get_nama_vendor() {
 				//autocomplete
 				$("#vendor").autocomplete({
-					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_vendor",
+					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_nama_vendor",
 					minLength: 1
 				});
 
-				//get_detail_autofill();
-			}
-
-			function get_no_kendaraan() {
-				//autocomplete
-				$("#no_kendaraan").autocomplete({
-					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_no_kendaraan",
-					minLength: 1
-				});
-
-			}
-
-			function get_sopir() {
-				//autocomplete
-				$("#sopir").autocomplete({
-					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_sopir",
-					minLength: 1
-				});
-
-				get_detail_sopir();
-			}
-
-			function get_nama_pelanggan() {
-				//autocomplete
-				var kode_vendor = $("#kode_vendor").val();
-				//console.log(kode_vendor);
-				$("#pelanggan").autocomplete({
-					source: "<?php echo base_url('index.php/pelanggan/get_nama_pelanggan_berd_vendor/') ?>" +
-						kode_vendor,
-					minLength: 1
-				});
-
-				get_detail_pelanggan();
-
-			}
-
-			function get_detail_sopir() {
-				var kode = $("#sopir").val();
-				console.log(kode);
-				if (kode != "") {
-					$.ajax({
-						url: "<?php echo base_url()?>index.php/sopir/get_detail_sopir",
-						data: "kode=" + kode,
-						success: function (data) {
-							var json = data,
-								obj = JSON.parse(json);
-							$('#telp_sopir').val(obj.NoTelpon);
-
-						}
-					});
-				} else {
-					$('#telp_sopir').val("");
-				}
-
+				get_detail_vendor();
 			}
 
 			function get_detail_vendor() {
-				var kode = $("#kode_vendor").val();
+				var kode = $("#vendor").val();
 				if (kode != "") {
 					$.ajax({
-						url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor",
+						url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor_berd_nama",
 						data: "kode=" + kode,
 						success: function (data) {
 							var json = data,
 								obj = JSON.parse(json);
+							$('#kode_vendor').val(obj.KodeVendor);
 							$('#vendor').val(obj.NamaVendor);
 							$('#alamat').val(obj.Alamat);
 
@@ -225,48 +173,7 @@
 
 			}
 
-			function get_detail_pelanggan() {
-				var kode = $("#pelanggan").val();
-				if (kode != "") {
-					$.ajax({
-						url: "<?php echo base_url()?>index.php/pelanggan/get_detail_pelanggan",
-						data: "kode=" + kode,
-						success: function (data) {
-							var json = data,
-								obj = JSON.parse(json);
-							$('#tujuan').val(obj.Kota);
-							$('#alamat_tujuan').val(obj.Alamat);
 
-						}
-					});
-				}
-
-			}
-
-
-			function get_detail_ekspedisi() {
-				var kode = $("#no_nota").val();
-				if (kode != "") {
-					$.ajax({
-						url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_ekspedisi",
-						data: "kode=" + kode,
-						success: function (data) {
-							var json = data,
-								obj = JSON.parse(json);
-							$('#kode_vendor').val(obj.KodeVendor);
-							$('#tanggal').val(obj.Tanggal);
-							console.log(formatDate(obj.Tanggal));
-							$('#no_kendaraan').val(obj.NoKendaraan);
-							$('#sopir').val(obj.Sopir);
-							$('#kapal').val(obj.Kapal);
-							$('#dari').val(obj.Asal);
-							$('#tujuan').val(obj.Tujuan);
-
-
-						}
-					});
-				}
-
-			}
+		
 
 		</script>

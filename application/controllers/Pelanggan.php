@@ -71,7 +71,6 @@ class Pelanggan extends CI_Controller
         $data = array(
                     "KodeVendor" => $kode_vendor,
 
-                    "KodePelanggan" => $this->input->post('kode_pelanggan'),
                     "NamaPelanggan" => $this->input->post('nama_pelanggan'),
                     "Kota" => $this->input->post('kota'),
                     "Alamat" => $this->input->post('alamat'),
@@ -100,7 +99,7 @@ class Pelanggan extends CI_Controller
 
     public function get_nama_pelanggan_berd_vendor($vendor)
     {
-        $kode = $_GET['term'];
+        $kode = $_GET['term']; 
         $data = $this->db->query("SELECT NamaPelanggan FROM pelanggan where NamaPelanggan like '%$kode%' AND KodeVendor = '$vendor' limit 10")->result();
         foreach ($data as $data) {
             $return_arr[] = $data->NamaPelanggan;
@@ -109,7 +108,7 @@ class Pelanggan extends CI_Controller
         echo json_encode($return_arr);
     }
 
-    public function get_detail_pelanggan()
+    public function get_detail_pelanggan() 
     {
         $kode = $_GET['kode'];
         $this->db->where('NamaPelanggan', $kode);

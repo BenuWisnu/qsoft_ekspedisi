@@ -35,19 +35,15 @@
                                         <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm">
 											<thead>
 												<tr>
+													<th>Aksi</th>
 													<th>No.</th>
 													<th>Tanggal</th>
-													<th>Akun Bayar</th>
 													<th>Tgl. Tambah</th>
 													<th>User Tambah</th>
-													<th>Keterangan</th>
-													<th>Bayar</th>
-													<th>No. Invoice</th>
 													<th>No. Nota</th>
-													<th>No. Bayar</th>
 													<th>Vendor Code</th>
 													<th>Nama Vendor</th>
-													<th>Aksi</th>
+													<th>Sub Total</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -59,24 +55,20 @@
 											
 													?>
 												<tr>
-													<td><?= $no++; ?></td>
-													<td><?= $hari.", ".tgl_default(substr($data->Tanggal, 0, 11)); ?></td>
-													<td><?= $data->AkunBayar; ?></td>
-													<td><?= $hari_tt.", ".tgl_default(substr($data->TanggalTambah, 0, 11)); ?></td>
-													<td><?= $data->UserTambah; ?></td>
-													<td><?= $data->Keterangan; ?></td>
-													<td><?= rupiah($data->Bayar); ?></td>
-													<td><?= $data->NoInvoice; ?></td>
-													<td><?= $data->NoNota; ?></td>
-													<td><?= $data->NoBayar; ?></td>
-													<td><?= $data->VendorCode; ?></td>
-													<td><?= $data->NamaVendor; ?></td>
 													<td>
 															<a class="btn btn-success btn-round text-white f-12"
 															href="<?= base_url('pembayaran/edit/'.$data->NoNota); ?>"><i class="feather icon-edit-2"></i> Edit</a>
 														<button class="btn btn-danger btn-round text-white f-12" onclick="ConfirmDialog(<?= $data->NoNota; ?>)">
 														<i class="feather icon-trash"></i> Hapus</button>
 													</td>
+													<td><?= $no++; ?></td>
+													<td><?= $hari."".tgl_default(substr($data->Tanggal, 0, 11)); ?></td>
+													<td><?= $hari_tt."".tgl_default(substr($data->TanggalTambah, 0, 11)); ?></td>
+													<td><?= $data->UserTambah; ?></td>
+													<td><?= $data->NoNota; ?></td>
+													<td><?= $data->VendorCode; ?></td>
+													<td><?= $data->NamaVendor; ?></td> 
+													<td><?= rupiah($data->Subtotal); ?></td> 
 												</tr>
 												<?php
                                                                     }

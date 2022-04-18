@@ -67,7 +67,7 @@
 
 								<div class="card-header">
 
-									<h5>Tambah Data Vendor</h5> 
+									<h5>Tambah Data Sopir</h5> 
 
 
 								</div> 
@@ -75,33 +75,27 @@
 
 								<div class="card-block">
 
-									<form action="<?php echo base_url('vendorekspedisi/update/'.$data['KodeVendor']); ?>" method="post" enctype="multipart/form-data">
+									<form action="<?php echo base_url('sopir/update/'.$data['KodeSopir']); ?>" method="post" enctype="multipart/form-data">
 
 						
                                         <div class="form-group row">
-											<label class="col-sm-2 col-form-label">Kode Vendor</label>
+											<label class="col-sm-2 col-form-label">Kode Sopir</label>
 											<div class="col-sm-10">
-												<input type="text" name="kode_pelanggan" id="kode_pelanggan" required class="form-control form-control-round"
-													placeholder="Kode Pelanggan" readonly value="<?= $data['KodeVendor']; ?>"> 
+												<input type="text" name="kode_sopir" id="kode_sopir" required class="form-control form-control-round"
+                                                readonly
+													placeholder="Kode Sopir" value="<?= $data['KodeSopir']; ?>">
 											</div>
 										</div>
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Nama Vendor</label>
+											<label class="col-sm-2 col-form-label">Nama Sopir</label>
 											<div class="col-sm-10">
-												<input type="text" name="nama_vendor" required class="form-control form-control-round"
-													placeholder="Vendor" value="<?= $data['NamaVendor']; ?>">
+												<input type="text" name="nama_sopir" required class="form-control form-control-round"
+													placeholder="Nama Sopir" value="<?= $data['NamaSopir']; ?>">
 											</div>
 										</div>
 
-										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Kota</label>
-											<div class="col-sm-10">
-												<input type="text" name="kota" required class="form-control form-control-round"
-													placeholder="Kota" value="<?= $data['Kota']; ?>">
-											</div>
-										</div>
-
+				
 
 										<div class="form-group row">
 											<label class="col-sm-2 col-form-label">Alamat</label>
@@ -114,23 +108,23 @@
 										<div class="form-group row">
 											<label class="col-sm-2 col-form-label">No. Telpon</label>
 											<div class="col-sm-10">
-												<input type="text" name="no_telpon"  class="form-control form-control-round"
+												<input type="text" name="no_telpon" required class="form-control form-control-round"
 													placeholder="No. Telpon" value="<?= $data['NoTelpon']; ?>">
 											</div>
 										</div>
 
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Jenis Barang</label>
+											<label class="col-sm-2 col-form-label">Pickup</label>
 											<div class="col-sm-10">
-												<input type="text" name="jenis_barang"  class="form-control form-control-round"
-													placeholder="Jenis Barang" value="<?= $data['JenisBarang']; ?>">
+												<input type="text" name="pickup" required class="form-control form-control-round"
+													placeholder="Pickup" value="<?= $data['Pickup']; ?>">
 											</div>
 										</div>
                                         
 										<div class="j-footer">
 											<button type="submit" class="btn btn-success btn-round"><i class="feather icon-plus"></i>Simpan Data</button>
-											<a href="<?= base_url('pelanggan'); ?>" class="btn btn-danger btn-round"><i class="feather icon-x"></i>Batalkan</a>
+											<a href="<?= base_url('sopir'); ?>" class="btn btn-danger btn-round"><i class="feather icon-x"></i>Batalkan</a>
 										</div>
 
 									</form>

@@ -30,8 +30,45 @@ class Armada extends CI_Controller
         $this->template->load('template', 'v_tambah_armada');
     }
 
+    public function edit($id)
+    {
+        $data['data'] = $this->m_armada->get_by_id($id); 
 
+        $this->template->load('template', 'v_edit_armada', $data);
+    }
+
+ 
+    public function create()
+    {
+        $data = array(
+                    "NoKendaraan" => $this->input->post('no_kendaraan'),
+                    "Jenis" => $this->input->post('jenis'),
+                    "Merek" => $this->input->post('merek'),
+                    "TahunPembuatan" => $this->input->post('tahun_pembuatan'),
+                    "TanggalPembelian" => $this->input->post('tanggal_pembelian'),
+                    "Sopir" => $this->input->post('sopir'),
+                    "HpSopir" => $this->input->post('hp_sopir')
+                );
+        $this->m_armada->insert($data);
+        $this->session->set_flashdata('success', "Berhasil");
+        redirect('armada');
+    }
   
+    public function update($id)
+    {
+        $data = array(
+                    "Jenis" => $this->input->post('jenis'),
+                    "Merek" => $this->input->post('merek'),
+                    "TahunPembuatan" => $this->input->post('tahun_pembuatan'),
+                    "TanggalPembelian" => $this->input->post('tanggal_pembelian'),
+                    "Sopir" => $this->input->post('sopir'),
+                    "HpSopir" => $this->input->post('hp_sopir')
+                );
+        $this->m_armada->update($id, $data);
+        $this->session->set_flashdata('success', "Berhasil");
+        redirect('armada');
+    }
+
 
     public function get_kode()
     {

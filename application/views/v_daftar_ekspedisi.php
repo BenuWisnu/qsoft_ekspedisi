@@ -9,7 +9,15 @@
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<i class="icofont icofont-close-line-circled"></i>
 					</button>
-					<strong>Success!</strong> <?= $this->session->flashdata('success'); ?></code>
+					<strong>Success!</strong> <?= $this->session->flashdata('success'); ?></code> 
+				</div>
+				<?php } ?>
+				<?php if ($this->session->flashdata('failed') != "") { ?>
+				<div class="alert alert-danger" id="success-alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<i class="icofont icofont-close-line-circled"></i>
+					</button>
+					<strong>Gagal!</strong> <?= $this->session->flashdata('failed'); ?></code> 
 				</div>
 				<?php } ?>
 
@@ -21,13 +29,13 @@
 								<div class="card-block bg-gray">
 									<!-- button Rounded -->
 									<!-- <span>Daftar siswa yang sudah melakukan registrasi pembuatan kartu.</span> -->
-									<a href="<?= base_url('ekspedisi/add'); ?>" class="btn btn-success btn-round text-right"><i class="feather icon-plus"></i> Tambah ekspedisi</a>
+									<a href="<?= base_url('ekspedisi/add'); ?>" class="btn btn-success btn-round text-right"><i class="feather icon-plus"></i> Tambah Manifest</a>
 								</div>
 							</div>
 							<!-- HTML5 Export Buttons table start -->
 							<div class="card">
 								<div class="card-header table-card-header">
-									<h5>Daftar Ekspedisi</h5> <br>
+									<h5>Daftar Manifest</h5> <br>
 									<!-- <span>Daftar siswa yang sudah melakukan registrasi pembuatan kartu.</span> -->
 								</div>
 								<div class="card-block">
@@ -35,6 +43,7 @@
                                         <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm">
 											<thead>
 												<tr>
+													<th>Aksi</th>
 													<th>No.</th>
 													<th>Cabang</th>
 													<th>Tanggal</th>
@@ -46,7 +55,6 @@
 													<th>Total Bayar Tujuan</th>
 													<th>Total Bayar Handling</th>
 													<th>Total Tagihan</th>
-													<th>Aksi</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -58,6 +66,12 @@
 											
 													?>
 												<tr>
+													<td>
+															<a class="btn btn-success btn-round text-white f-12"
+															href="<?= base_url('ekspedisi/edit/'.$data->NoNota); ?>"><i class="feather icon-edit-2"></i> Edit</a>
+														<button class="btn btn-danger btn-round text-white f-12" onclick="ConfirmDialog(<?= $data->NoNota; ?>)">
+														<i class="feather icon-trash"></i> Hapus</button>
+													</td>
 													<td><?= $no++; ?></td>
 													<td><?= $data->Cabang; ?></td>
 													<td><?= $hari.tgl_default(substr($data->Tanggal, 0, 11)); ?></td>
@@ -69,12 +83,6 @@
 													<td><?= $data->TotalBayarTujuan; ?></td>
 													<td><?= $data->TotalBiayaHandling; ?></td>
 													<td><?= $data->TagihanTotal; ?></td>
-													<td>
-															<a class="btn btn-success btn-round text-white f-12"
-															href="<?= base_url('ekspedisi/edit/'.$data->NoNota); ?>"><i class="feather icon-edit-2"></i> Edit</a>
-														<button class="btn btn-danger btn-round text-white f-12" onclick="ConfirmDialog(<?= $data->NoNota; ?>)">
-														<i class="feather icon-trash"></i> Hapus</button>
-													</td>
 												</tr>
 												
 												<?php
@@ -192,7 +200,7 @@
     function ConfirmDialog(id) {
 		var x=confirm("Are you sure to delete record?")
 		if (x) {
-          	window.location = url + "siswa/delete/" + id;
+          	window.location = url + "ekspedisi/delete/" + id;
 		} else {
 			return false;
 		}

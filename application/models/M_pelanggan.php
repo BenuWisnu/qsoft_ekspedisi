@@ -12,12 +12,13 @@ class M_pelanggan extends CI_Model {
     }
 
     public function get_all() {
+        $this->db->order_by("TanggalTambah", "DESC");
         return $this->db->get($this->view)->result();
-    }
+    } 
 
-    public function get_by_id($id) {
+    public function get_by_id($id) { 
         $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->result();
+        return $this->db->get($this->table)->row_array();
     }
 
     public function insert($data) {

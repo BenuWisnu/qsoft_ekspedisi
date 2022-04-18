@@ -22,11 +22,18 @@ class Sopir extends CI_Controller
         echo $this->m_sopir->json();  
     } 
 
-
+ 
 
     public function add()
     {
         $this->template->load('template', 'v_tambah_sopir');
+    }
+
+    public function edit($id)
+    {
+        $data['data'] = $this->m_sopir->get_by_id($id); 
+
+        $this->template->load('template', 'v_edit_sopir', $data);
     }
 
     public function create()
@@ -35,9 +42,23 @@ class Sopir extends CI_Controller
                     "KodeSopir" => $this->input->post('kode_sopir'),
                     "NamaSopir" => $this->input->post('nama_sopir'),
                     "Alamat" => $this->input->post('alamat'),
-                    "NoTelpon" => $this->input->post('no_telpon')
+                    "NoTelpon" => $this->input->post('no_telpon'),
+                    "Pickup" => $this->input->post('pickup')
                 );
         $this->m_sopir->insert($data);
+        $this->session->set_flashdata('success', "Berhasil");
+        redirect('sopir');
+    }
+
+    public function update($id)
+    {
+        $data = array(
+                    "NamaSopir" => $this->input->post('nama_sopir'),
+                    "Alamat" => $this->input->post('alamat'),
+                    "NoTelpon" => $this->input->post('no_telpon'),
+                    "Pickup" => $this->input->post('pickup')
+                );
+        $this->m_sopir->update($id, $data);
         $this->session->set_flashdata('success', "Berhasil");
         redirect('sopir');
     }

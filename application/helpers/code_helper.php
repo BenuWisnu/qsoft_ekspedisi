@@ -99,15 +99,58 @@ function no_urut_otomatis($table, $field)
     return $kodeBaru;
 }
 
+function no_otomatis($table, $field, $where, $value)
+{
+    $ci = get_instance();
+
+    $query = "SELECT max($field) as kode FROM $table where $where = '$value'";
+    $data = $ci->db->query($query)->row_array();
+    $kode =  $data['kode'] + 1;
+
+    return $kode; 
+}
+
+function no_otomatis_bayar($table, $field)
+{
+    $ci = get_instance();
+
+    $query = "SELECT max($field) as kode FROM $table";
+    $data = $ci->db->query($query)->row_array();
+    $kode =  $data['kode'];
+
+    if ($kode == 1) {
+        $kode++;
+        $kodeBaru = "00000".$kode;
+    } elseif ($kode > 1 && $kode <= 8) {
+        $kode++;
+        $kodeBaru = "0000".$kode;
+    } elseif ($kode >= 9 && $kode <= 99) {
+        $kode++;
+        $kodeBaru = "000".$kode;
+    } elseif ($kode >= 100 && $kode <= 999) {
+        $kode++;
+        $kodeBaru = "000".$kode;
+    } 
+    else {
+        $kode++;
+        $kodeBaru = "000".$kode;
+    }
+
+    return $kodeBaru; 
+}
+
+
+
+
 function kode_otomatis($table, $field, $prefix)
 {
     $ci = get_instance();
-    $today = date('Y-m-d');
+    $today = date('Y-m-d'); 
 
 
     $kodeBaru = 0;
-    // mencari kode barang dengan nilai paling besar
-    $query = "SELECT max($field) as kode FROM $table where Tanggal = '$today'";
+    // mencari kode  dengan nilai paling besar
+    $query = "SELECT max($field) as kode FROM $table where substr(TanggalTambah, 1, 10) = '$today'";
     $data = $ci->db->query($query)->row_array();
     $kode =  substr($data['kode'], 11, 4);
 
@@ -188,14 +231,16 @@ function get_kode_table($table, $field, $where_field,  $value)
 function check_data_table($table, $where_field,  $value)
 {
     $ci = get_instance();
-    // mencari kode barang dengan nilai paling besar
+    // mencari cek data
     $query = "SELECT *FROM $table where $where_field = '".urldecode($value)."'";
-    $data = $ci->db->query($query)->row_array();
-    if (isset($data)) {
-        return $data;
+    $data = $ci->db->query($query)->num_rows();
+
+
+    if ($data <= 0) {
+        return true;
     }
     else {
-        $data = "";
+        return false;
     }
 }
 
@@ -206,7 +251,7 @@ function get_sum_by_field($table, $field, $where_field,  $value)
     $query = "SELECT SUM($field) as total FROM $table where $where_field = '".urldecode($value)."'";
     $data = $ci->db->query($query)->row_array();
     if (isset($data['total'])) {
-        return $data['total'];
+        return $data['total'];  
     }
     else {
         $data = "";

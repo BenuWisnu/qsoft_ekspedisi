@@ -70,7 +70,7 @@
 									</p>
 									<button type="button" class="btn btn-success btn-round waves-effect"
 										data-toggle="modal" data-target="#default-Modal"><i
-											class="feather icon-plus"></i> Tambahkan Nota</button>
+											class="feather icon-plus"></i> Tambahkan Manifest</button>
 								</div>
 							</div>
 							<!-- Input Alignment card start -->
@@ -119,7 +119,6 @@
 																			class="table table-striped table-bordered nowrap">
 																			<thead>
 																				<tr>
-																					<th>No.</th>
 																					<th>No. Item</th>
 																					<th>No. Invoice</th>
 																					<th>Amount</th>
@@ -134,7 +133,6 @@
 																						
 																								?>
 																				<tr>
-																					<td><?= $no++; ?></td>
 																					<td><?= $data_detail->ItemNo; ?>
 																					</td>
 																					<td><?= $data_detail->NoInvoice; ?>
@@ -158,16 +156,6 @@
 
 																												?>
 																			</tbody>
-																			<tfoot>
-																				<tr>
-																					<th>No.</th>
-																					<th>No. Item</th>
-																					<th>No. Invoice</th>
-																					<th>Amount</th>
-																					<th>No. Nota</th>
-																					<th>Aksi</th>
-																				</tr>
-																			</tfoot>
 																		</table>
 																	</div>
 																</div>
@@ -178,39 +166,42 @@
 																		method="post">
 
 
-                                                                        <input type="hidden" name="no_nota_invoice" id="no_nota_invoice" readonly
-                                                                            class="form-control form-control-round"
-                                                                             value="<?= $data['NoInvoice']; ?>">
+																		<input type="hidden" name="no_nota_invoice"
+																			id="no_nota_invoice" readonly
+																			class="form-control form-control-round"
+																			value="<?= $data['NoInvoice']; ?>">
 
 
 																		<div class="form-group row">
-																			<label class="col-sm-4 col-form-label">Item No.</label>
+																			<label class="col-sm-4 col-form-label">Item
+																				No.</label>
 																			<div class="col-sm-8">
-																				<input type="text"
-																					name="no_item"
+																				<input type="text" name="no_item"
 																					id="no_item" required
 																					class="form-control form-control-round"
 																					placeholder="Item No."
-																					value="">
+																					value="<?= no_otomatis("invoicedtl", "ItemNo", "NoInvoice", $data['NoInvoice']); ?>">
 																			</div>
 																		</div>
 
 
 																		<div class="form-group row">
-																			<label
-																				class="col-sm-4 col-form-label">No. Nota</label>
+																			<label class="col-sm-4 col-form-label">No.
+																				Nota</label>
 																			<div class="col-sm-8">
-                                                                                <select name="no_nota" id="no_nota" onchange="get_ekspedisi()"
-                                                                                    class="form-control form-control-round">
+																				<select name="no_nota" id="no_nota"
+																					onchange="get_ekspedisi()"
+																					class="form-control form-control-round">
 
-                                                                            
-                                                                                    <?php foreach ($data_nota as $data_nota) { ?>
-                                                                                    <option value="<?= $data_nota->NoNota; ?>"> 
-                                                                                        <?= $data_nota->NoNota." | ".$data_nota->NoKendaraan." | ".$data_nota->TagihanTotal;?>
-                                                                                    </option>
-                                                                                    <?php } ?>
 
-                                                                                </select>
+																					<?php foreach ($data_nota as $data_nota) { ?>
+																					<option
+																						value="<?= $data_nota->NoNota; ?>">
+																						<?= $data_nota->NoNota." | ".$data_nota->NoKendaraan." | ".$data_nota->TagihanTotal;?>
+																					</option>
+																					<?php } ?>
+
+																				</select>
 																			</div>
 																		</div>
 
@@ -226,7 +217,7 @@
 																			</div>
 																		</div>
 
-																	
+
 
 																		<div class="form-group row">
 																			<label class="col-sm-4 col-form-label">
@@ -236,8 +227,7 @@
 																					class="input-group input-group-secondary input-group">
 																					<input type="number"
 																						class="form-control form-control-round"
-																						name="amount"
-																						id="amount"
+																						name="amount" id="amount"
 																						onkeyup="" required
 																						placeholder="Total Tagihan"
 																						maxlength="30"
@@ -245,8 +235,7 @@
 																					<span
 																						class="input-group-addon bg-black"
 																						style="width: 220px"
-																						id="span_amount"
-																						min="0"></span>
+																						id="span_amount" min="0"></span>
 																				</div>
 																			</div>
 																		</div>
@@ -292,20 +281,20 @@
 											</div>
 										</div>
 
-
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Kode Vendor</label>
+											<label class="col-sm-2 col-form-label">Nama Vendor</label>
+											<div class="col-sm-3">
+												<input type="text" name="vendor" id="vendor"
+													class="form-control form-control-round" placeholder="Nama Vendor"
+													onkeyup="get_nama_vendor()"
+													value="<?= get_kode_table("vendor", "NamaVendor", "KodeVendor", $data['VendorCode']); ?>">
+											</div>
 											<div class="col-sm-3">
 												<input type="text" name="kode_vendor" id="kode_vendor"
 													class="form-control form-control-round" placeholder="Kode Vendor"
 													onkeyup="get_kode_vendor()" value="<?= $data['VendorCode']; ?>">
 											</div>
-											<div class="col-sm-3">
-												<input type="text" name="vendor" id="vendor"
-													class="form-control form-control-round" readonly
-													placeholder="Nama Vendor" onkeyup="get_nama_vendor()"
-													value="<?= get_kode_table("vendor", "NamaVendor", "KodeVendor", $data['VendorCode']); ?>">
-											</div>
+
 											<div class="col-sm-4">
 												<input type="text" name="alamat" id="alamat"
 													class="form-control form-control-round" readonly
@@ -313,6 +302,8 @@
 													value="<?= get_kode_table("vendor", "Alamat", "KodeVendor", $data['VendorCode']); ?>">
 											</div>
 										</div>
+
+
 
 
 										<div class="form-group row">
@@ -336,16 +327,17 @@
 														min="0">Top</span>
 
 													<input type="number" class="form-control form-control-round" min="0"
-														max="31" value="0" name="top" id="top"
-														onkeyup="hitung_due_date()" required
+														max="31" name="top" id="top"
+														onkeyup="hitung_due_date()" required 
 														placeholder="Term Of Payment" maxlength="30"
+														value="<?= (int) $data['TOP']; ?>"
 														oninput="numberOnly(this.id);javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 													<span class="input-group-addon bg-black" style="width: 100px" id=""
 														min="0">Days</span>
 												</div>
 											</div>
 											<div class="col-sm-6">
-												<input type="text" name="due_date" id="due_date"
+												<input type="text" name="due_date" id="due_date" readonly
 													class="form-control form-control-round date" data-mask="99/99/9999"
 													placeholder="Tanggal Jatuh Tempo (Due Date)"
 													value="<?= tgl_default_4($data['TanggalTempo']); ?>">
@@ -415,6 +407,7 @@
 													<input type="number" class="form-control form-control-round"
 														name="total_bayar_tujuan" id="total_bayar_tujuan"
 														placeholder="Total Bayar Tujuan" maxlength="30"
+														value="<?= $data['TotalTagihan']; ?>"
 														oninput="numberOnly(this.id);javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 													<span class="input-group-addon bg-black" style="width: 220px"
 														id="span_total_bayar_tujuan" min="0"></span>
@@ -449,45 +442,48 @@
 	</div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script type="text/javascript">
+	var url = "<?php echo base_url();?>";
 
-    var url="<?php echo base_url();?>";
-			
-        function delete_item_nota(id) {
-            var x=confirm("Are you sure to delete record?")
-            if (x) {
-                window.location = url + "invoice/delete_item_nota/" + id;
-            } else {
-                return false;
-            }
-        }
+	
+	var due_date = $("#invoice_date").val();
+
+	function delete_item_nota(id) {
+		var x = confirm("Are you sure to delete record?")
+		if (x) {
+			window.location = url + "invoice/delete_item_nota/" + id;
+		} else {
+			return false;
+		}
+	}
 
 
-    function get_ekspedisi() {
-        var no_nota = $("#no_nota").val();
-        get_detail_ekspedisi();
-    }
+	function get_ekspedisi() {
+		var no_nota = $("#no_nota").val();
+		get_detail_ekspedisi();
+	}
 
-    function get_detail_ekspedisi() {
-        var kode = $("#no_nota").val();
-        console.log(kode);
-        if (kode != "") {
-            $.ajax({
-                url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_ekspedisi",
-                data: "kode=" + kode,
-                success: function (data) {
-                    var json = data,
-                        obj = JSON.parse(json);
-                    $('#nopol').val(obj.NoKendaraan);
-                    $('#amount').val(obj.TagihanTotal);
-                    document.getElementById('span_amount').innerHTML = get_rupiah(obj.TagihanTotal);
+	function get_detail_ekspedisi() {
+		var kode = $("#no_nota").val();
+		console.log(kode);
+		if (kode != "") {
+			$.ajax({ 
+				url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_ekspedisi",
+				data: "kode=" + kode,
+				success: function (data) {
+					var json = data,
+						obj = JSON.parse(json);
+					$('#nopol').val(obj.NoKendaraan);
+					$('#amount').val(obj.TagihanTotal);
+					document.getElementById('span_amount').innerHTML = get_rupiah(obj.TagihanTotal);
 
-                }
-            });
-        }
+				}
+			});
+		}
 
-    }
+	}
 
 
 	function get_no_nota_pencarian() {
@@ -511,6 +507,8 @@
 	}
 
 
+
+
 	function get_vendor() {
 		//autocomplete
 		$("#vendor").autocomplete({
@@ -522,16 +520,26 @@
 	}
 
 
+	function get_nama_vendor() {
+		//autocomplete
+		$("#vendor").autocomplete({
+			source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_nama_vendor",
+			minLength: 1
+		});
+
+		get_detail_vendor();
+	}
 
 	function get_detail_vendor() {
-		var kode = $("#kode_vendor").val();
+		var kode = $("#vendor").val();
 		if (kode != "") {
 			$.ajax({
-				url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor",
+				url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor_berd_nama",
 				data: "kode=" + kode,
 				success: function (data) {
 					var json = data,
 						obj = JSON.parse(json);
+					$('#kode_vendor').val(obj.KodeVendor);
 					$('#vendor').val(obj.NamaVendor);
 					$('#alamat').val(obj.Alamat);
 
@@ -546,19 +554,18 @@
 
 	}
 
-    function get_rupiah(val) {
-        var numb = val;
-        const format = numb.toString().split('').reverse().join('');
-        const convert = format.match(/\d{1,3}/g);
-        const rupiah = 'Rp ' + convert.join('.').split('').reverse().join('')
-        return rupiah;
-    }
+	function get_rupiah(val) {
+		var numb = val;
+		const format = numb.toString().split('').reverse().join('');
+		const convert = format.match(/\d{1,3}/g);
+		const rupiah = 'Rp ' + convert.join('.').split('').reverse().join('')
+		return rupiah;
+	}
 
 
 	function hitung_due_date() {
 
 		var top = parseInt($("#top").val());
-		var due_date = $("#due_date").val();
 		var res = 0;
 
 		var day = (top + parseInt(due_date.substr(0, 2)));

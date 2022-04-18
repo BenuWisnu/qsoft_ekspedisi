@@ -36,11 +36,10 @@ class Invoice extends CI_Controller
     {
 
         $kode_vendor = $this->m_invoice->get_by_id($id);
-        $kode_vendor = $kode_vendor['VendorCode']; 
-
+        $kode_vendor = $kode_vendor['VendorCode'];  
 
         $data['data'] = $this->m_invoice->get_by_id($id);
-        $data['data_nota'] = $this->m_ekspedisi->get_all_tagihan_ekspedisi($id, $kode_vendor);
+        $data['data_nota'] = $this->m_ekspedisi->get_all_tagihan_ekspedisi($kode_vendor); 
         $data['data_bank'] = $this->m_bank->get_all();
         $data['data_invoice_detail'] = $this->m_invoice->get_all_detail($id);
 
@@ -110,6 +109,31 @@ class Invoice extends CI_Controller
         $this->m_invoice->insert_detail($data);
         $this->session->set_flashdata('success', "Berhasil");
         redirect('invoice/edit/'.$no_nota);
+    }
+
+    public function get_invoice_berd_vendor($vendor)
+    {
+        $kode = $_GET['term'];
+        $data = $this->m_invoice->get_all_invoices_blm_terbayar($vendor);
+        foreach ($data as $data) {
+            $return_arr[] = $data->NoInvoice;
+        }
+
+        echo json_encode($return_arr);
+    }
+
+    public function get_detail_invoice()
+    {
+        $kode = $_GET['kode'];
+        $this->db->where('NoInvoice', $kode);
+        $this->db->limit(5);
+        $data = $this->db->get('invoice')->row_array();
+        $data = array(
+                'JumlahTagihan' => $data['JumlahTagihan'],
+                'JumlahSisa' => $data['JumlahSisa']
+        );
+  
+        echo json_encode($data);
     }
 
     public function delete_item_nota($id) {

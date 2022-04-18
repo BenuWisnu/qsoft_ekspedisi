@@ -47,7 +47,7 @@
             <li class="">
                 <a href="<?= base_url("ekspedisi"); ?>"> 
                     <span class="pcoded-micon"><i class="feather icon-file-text"></i></span>
-                    <span class="pcoded-mtext">Ekspedisi</span>
+                    <span class="pcoded-mtext">Manifest</span>
                 </a>
             </li>
      

@@ -28,6 +28,10 @@ class M_invoice extends CI_Model {
         return $this->db->get($this->table)->row_array();
     }
 
+    public function get_all_invoices_blm_terbayar($vendor_code) {
+        return $this->db->query("select *FROM invoice where VendorCode = '$vendor_code' and status <> 'Closed'")->result();
+    }
+
 
     public function insert($data) {
         $this->db->insert($this->table, $data);

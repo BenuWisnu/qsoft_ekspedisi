@@ -15,8 +15,8 @@ class M_sopir extends CI_Model {
     }
 
     public function get_by_id($id) {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->result();
+        $this->db->where($this->id, urldecode($id));
+        return $this->db->get($this->table)->row_array();
     }
 
     public function insert($data) {
@@ -24,7 +24,7 @@ class M_sopir extends CI_Model {
     }
 
     public function update($id, $data) {
-        $this->db->where($this->id, $id);
+        $this->db->where($this->id, urldecode($id));
         $this->db->update($this->table, $data);
     }
 

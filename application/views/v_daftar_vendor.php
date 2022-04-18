@@ -35,6 +35,7 @@
                                         <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm">
 											<thead>
 												<tr>
+													<th>Aksi</th>
 													<th>No.</th>
 													<th>Kode Vendor</th>
 													<th>Nama Vendor</th>
@@ -42,7 +43,6 @@
 													<th>Alamat</th>
 													<th>No. Telpon</th>
 													<th>Jenis Barang</th>
-													<th>Aksi</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -51,6 +51,12 @@
 												foreach ($data_vendor as $data) {
 													?>
 												<tr>
+													<td>
+															<a class="btn btn-success btn-round text-white f-12"
+															href="<?= base_url('vendorekspedisi/edit/'.$data->KodeVendor); ?>"><i class="feather icon-edit-2"></i> Edit</a>
+														<button class="btn btn-danger btn-round text-white f-12" onclick="delete_item(<?= $data->KodeVendor; ?>)">
+														<i class="feather icon-trash"></i> Hapus</button>
+													</td>
 													<td><?= $no++; ?></td>
 													<td><?= $data->KodeVendor; ?></td>
 													<td><?= $data->NamaVendor; ?></td>
@@ -58,12 +64,6 @@
 													<td><?= $data->Alamat; ?></td>
 													<td><?= $data->NoTelpon; ?></td>
 													<td><?= $data->JenisBarang; ?></td>
-													<td>
-															<a class="btn btn-success btn-round text-white f-12"
-															href="<?= base_url('vendorekspedisi/edit/'.$data->KodeVendor); ?>"><i class="feather icon-edit-2"></i> Edit</a>
-														<button class="btn btn-danger btn-round text-white f-12" onclick="ConfirmDialog(<?= $data->KodeVendor; ?>)">
-														<i class="feather icon-trash"></i> Hapus</button>
-													</td>
 												</tr>
 												<?php
                                                                     }
@@ -87,12 +87,16 @@
 
 </div>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <script type="text/javascript">
-	var url="<?php echo base_url();?>";
-    function ConfirmDialog(id) {
-		var x=confirm("Are you sure to delete record?")
+	var url = "<?php echo base_url();?>";
+
+	function delete_item(id) {
+		var x = confirm("Are you sure to delete record?")
 		if (x) {
-          	window.location = url + "invoice/delete/" + id;
+			window.location = url + "vendorekspedisi/delete/" + encodeURI(id); 
 		} else {
 			return false;
 		}

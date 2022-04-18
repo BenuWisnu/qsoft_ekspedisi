@@ -35,13 +35,13 @@
                                         <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm">
 											<thead>
 												<tr>
+													<th>Aksi</th>
 													<th>No.</th>
 													<th>No. Kendaraan</th>
 													<th>Jenis</th>
 													<th>Merek</th>
 													<th>Tahun Pembuatan</th>
 													<th>Tanggal Pembelian</th>
-													<th>Aksi</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -52,18 +52,18 @@
 													$hari_beli = tgl_dan_hari(substr($data->TanggalPembelian, 0, 11));
 													?>
 												<tr>
-													<td><?= $no++; ?></td>
-													<td><?= $data->NoKendaraan; ?></td>
-													<td><?= $data->Jenis; ?></td>
-													<td><?= $data->Merek; ?></td>
-													<td><?= $hari_buat.tgl_default(substr($data->TahunPembuatan, 0, 11)); ?></td>
-													<td><?= $hari_beli.tgl_default(substr($data->TanggalPembelian, 0, 11)); ?></td>
 													<td>
 															<a class="btn btn-success btn-round text-white f-12"
 															href="<?= base_url('armada/edit/'.$data->NoKendaraan); ?>"><i class="feather icon-edit-2"></i> Edit</a>
 														<button class="btn btn-danger btn-round text-white f-12" onclick="ConfirmDialog(<?= $data->NoKendaraan; ?>)">
 														<i class="feather icon-trash"></i> Hapus</button>
 													</td>
+													<td><?= $no++; ?></td>
+													<td><?= $data->NoKendaraan; ?></td>
+													<td><?= $data->Jenis; ?></td>
+													<td><?= $data->Merek; ?></td>
+													<td><?= $data->TahunPembuatan; ?></td>
+													<td><?= $hari_beli.tgl_default(substr($data->TanggalPembelian, 0, 11)); ?></td>
 												</tr>
 												<?php
                                                                     }

@@ -93,23 +93,24 @@
 
 
 										<div class="form-group row">
-											<label class="col-sm-2 col-form-label">Kode Vendor</label>
-											<div class="col-sm-3">
-												<input type="text" name="kode_vendor" id="kode_vendor"
-													class="form-control form-control-round" placeholder="Kode Vendor"
-													onkeyup="get_kode_vendor()">
+												<label class="col-sm-2 col-form-label">Nama Vendor</label>
+												<div class="col-sm-3">
+													<input type="text" name="vendor" id="vendor"
+														class="form-control form-control-round"
+														placeholder="Nama Vendor" onkeyup="get_nama_vendor()">
+												</div>
+												<div class="col-sm-3">
+													<input type="text" name="kode_vendor" id="kode_vendor"
+														class="form-control form-control-round"
+														placeholder="Kode Vendor" onkeyup="get_kode_vendor()">
+												</div>
+
+												<div class="col-sm-4">
+													<input type="text" name="alamat" id="alamat"
+														class="form-control form-control-round" readonly
+														placeholder="Alamat Vendor">
+												</div>
 											</div>
-											<div class="col-sm-3">
-												<input type="text" name="vendor" id="vendor"
-													class="form-control form-control-round" readonly
-													placeholder="Nama Vendor" onkeyup="get_nama_vendor()">
-											</div>
-											<div class="col-sm-4">
-												<input type="text" name="alamat" id="alamat"
-													class="form-control form-control-round" readonly
-													placeholder="Alamat Vendor">
-											</div>
-										</div>
 
 
 										<div class="form-group row">
@@ -132,7 +133,7 @@
 														min="0">Top</span>
 
 													<input type="number" class="form-control form-control-round" min="0" max="31" value="0"
-														name="top" id="top" onkeyup="hitung_due_date()" required
+														name="top" id="top" onkeyup="hitung_due_date()" required 
 														placeholder="Term Of Payment" maxlength="30"
 														oninput="numberOnly(this.id);javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 													<span class="input-group-addon bg-black" style="width: 100px" id=""
@@ -142,7 +143,7 @@
 											<div class="col-sm-6">
 												<input type="text" name="due_date" id="due_date"
 													class="form-control form-control-round date" data-mask="99/99/9999"
-													placeholder="Tanggal Jatuh Tempo (Due Date)"
+													placeholder="Tanggal Jatuh Tempo (Due Date)" readonly
 													value="<?= date("d/m/Y"); ?>">
 											</div>
 										</div>
@@ -239,13 +240,11 @@
 </div>
 
 
-<script type="text/javascript">
-	load_variables();
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-	function load_variables() {
-		var kode_tes = $("#due_date").val();
-		console.log(kode_tes);
-	}
+<script type="text/javascript">
+
+	var due_date = $("#invoice_date").val();
 
 	function get_cabang() {
 		//autocomplete
@@ -286,6 +285,16 @@
 
 		get_detail_vendor();
 	}
+
+	function get_nama_vendor() {
+			//autocomplete
+			$("#vendor").autocomplete({
+				source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_nama_vendor",
+				minLength: 1
+			});
+
+			get_detail_vendor();
+		}
 
 
 	function get_vendor() {
@@ -351,27 +360,28 @@
 	}
 
 	function get_detail_vendor() {
-		var kode = $("#kode_vendor").val();
-		if (kode != "") {
-			$.ajax({
-				url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor",
-				data: "kode=" + kode,
-				success: function (data) {
-					var json = data,
-						obj = JSON.parse(json);
-					$('#vendor').val(obj.NamaVendor);
-					$('#alamat').val(obj.Alamat);
+				var kode = $("#vendor").val();
+				if (kode != "") {
+					$.ajax({
+						url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor_berd_nama",
+						data: "kode=" + kode,
+						success: function (data) {
+							var json = data,
+								obj = JSON.parse(json);
+							$('#kode_vendor').val(obj.KodeVendor);
+							$('#vendor').val(obj.NamaVendor);
+							$('#alamat').val(obj.Alamat);
 
+
+						}
+					});
+				} else {
+					$('#vendor').val("");
+					$('#alamat').val("");
 
 				}
-			});
-		} else {
-			$('#vendor').val("");
-			$('#alamat').val("");
 
-		}
-
-	}
+			}
 
 	function get_detail_pelanggan() {
 		var kode = $("#pelanggan").val();
@@ -420,7 +430,6 @@
 	function hitung_due_date() {
 
 		var top = parseInt($("#top").val());
-		var due_date = $("#due_date").val();
 		var res = 0;
 
 		var day = (top + parseInt(due_date.substr(0, 2)));
@@ -444,7 +453,7 @@
 		}
 
 		if (top == "") {
-			res = "02/02/2022";
+			res = due_date;
 		}
 		else {
 			res = day + "/" + month + "/" + year;

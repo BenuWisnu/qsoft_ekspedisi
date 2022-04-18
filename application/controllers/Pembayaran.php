@@ -12,7 +12,7 @@ class Pembayaran extends CI_Controller
 
     public function index()
     {
-        $data['data_pembayaran'] = $this->m_pembayaran->get_all();
+        $data['data_pembayaran'] = $this->m_pembayaran->get_all(); 
         $this->template->load('template', 'v_daftar_pembayaran', $data);
     }
 
@@ -30,15 +30,15 @@ class Pembayaran extends CI_Controller
     }
 
     public function edit($id)
-    {
+    { 
         $data['data'] = $this->m_pembayaran->get_by_id($id);
-        $data['data_sub_total'] = get_sum_by_field("invoicebayar", "Subtotal", "NoNota", $id);
+        $data['data_sub_total'] = get_sum_by_field("invoicebayardtl", "Bayar", "NoNota", $id);
 
         $data['data_pembayaran_detail'] = $this->m_pembayaran->get_all_detail($id);
         $this->template->load('template', 'v_edit_pembayaran', $data);
     }
 
-    public function create()
+    public function create() 
     {
         //GET NO. NOTA
         $no_nota = $this->input->post('no_nota');
@@ -55,6 +55,28 @@ class Pembayaran extends CI_Controller
         $this->m_pembayaran->insert($data);
         $this->session->set_flashdata('success', "Berhasil");
         redirect('pembayaran/edit/'.$no_nota);
+    }
+
+    public function create_nota()
+    {
+        
+        //GET NO. NOTA
+        $no_nota = $this->input->post('no_nota');
+        $no_invoice = $this->input->post('no_invoice');
+
+        $data = array(
+
+                    "NoBayar" => $this->input->post('no_bayar'),
+                    "NoNota" => $this->input->post('no_nota'),
+                    "NoInvoice" => $no_invoice,
+                    "JumlahSisa" => $this->input->post('total_sisa_tagihan'),
+                    "Bayar" => $this->input->post('total_bayar'),
+                    "UserTambah" => $this->session->userdata('KodePemakai')
+
+                );
+        $this->m_pembayaran->insert_detail($data);
+        $this->session->set_flashdata('success', "Berhasil");
+        redirect('pembayaran/edit/'.$no_nota); 
     }
 
 
@@ -76,5 +98,15 @@ class Pembayaran extends CI_Controller
         $this->session->set_flashdata('success', "Berhasil"); 
 
         redirect('pembayaran');
+    }
+
+    public function delete_item_nota($id)
+    {
+        $no_nota = get_kode_table("invoicebayardtl", "NoNota", "NoBayar", $id);
+
+        $this->m_pembayaran->delete_item($id);
+        $this->session->set_flashdata('success', "Berhasil");
+
+        redirect('pembayaran/edit/'.$no_nota);
     }
 }

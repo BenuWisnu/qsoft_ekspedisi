@@ -23,10 +23,10 @@ class M_ekspedisi extends CI_Model {
         return $this->db->get($this->table_detail)->result(); 
     }
 
-    public function get_all_tagihan_ekspedisi($no_invoice, $kode_vendor) {
-        $query = "SELECT * FROM view_ekspedisi_invoice  WHERE  NoInvoice  NOT  IN (SELECT NoInvoice FROM  invoicedtl WHERE NoInvoice IS NULL ) AND KodeVendor = '$kode_vendor' AND NoInvoice = '$no_invoice'";
+    public function get_all_tagihan_ekspedisi($kode_vendor) {
+        $query = "SELECT *FROM ekspedisi WHERE KodeVendor = '$kode_vendor' AND NoNota NOT IN (SELECT NoNota FROM invoicedtl)";
         return $this->db->query($query)->result();
-    }
+    } 
 
     public function get_by_id($id) {
         $this->db->where($this->id, $id);

@@ -30,7 +30,7 @@ class Vendorekspedisi extends CI_Controller
 
     public function edit($id)
     {
-        $data['data'] = $this->m_vendor->get_by_id($id);
+        $data['data'] = $this->m_vendor->get_by_id($id); 
 
         $this->template->load('template', 'v_edit_vendor', $data);
     }
@@ -50,14 +50,13 @@ class Vendorekspedisi extends CI_Controller
                 );
         $this->m_vendor->insert($data);
         $this->session->set_flashdata('success', "Berhasil");
-        redirect('vendor');
+        redirect('vendorekspedisi');
     }
 
     public function update($id)
     {
 
         $data = array(
-                    "KodeVendor" => $this->input->post('kode_vendor'),
                     "NamaVendor" => $this->input->post('nama_vendor'),
                     "Kota" => $this->input->post('kota'),
                     "Alamat" => $this->input->post('alamat'),
@@ -68,7 +67,7 @@ class Vendorekspedisi extends CI_Controller
                 );
         $this->m_vendor->update($id, $data);
         $this->session->set_flashdata('success', "Berhasil");
-        redirect('vendor');
+        redirect('vendorekspedisi');
     }
 
     public function get_kode()
@@ -87,7 +86,7 @@ class Vendorekspedisi extends CI_Controller
         $this->m_vendor->delete($id);
         $this->session->set_flashdata('success', "Berhasil"); 
 
-        redirect('vendor');
+        redirect('vendorekspedisi');
     }
 
 
@@ -101,6 +100,19 @@ class Vendorekspedisi extends CI_Controller
         $data = $this->db->get('vendor')->result();
         foreach ($data as $data) {
             $return_arr[] = $data->KodeVendor;
+        }
+
+        echo json_encode($return_arr);
+    }
+
+
+    public function get_nama_vendor() 
+    {
+        $this->db->like('NamaVendor', $_GET['term']);
+        $this->db->limit(10);
+        $data = $this->db->get('vendor')->result();
+        foreach ($data as $data) {
+            $return_arr[] = $data->NamaVendor;
         }
 
         echo json_encode($return_arr);
@@ -189,6 +201,20 @@ class Vendorekspedisi extends CI_Controller
                 'Alamat' => $res['Alamat']
         );
 
+        echo json_encode($data);
+    }
+
+    public function get_detail_vendor_berd_nama()
+    {
+        $vendor = $_GET['kode'];
+        $this->db->where('NamaVendor', $vendor);
+        $res = $this->db->get('vendor')->row_array();
+        $data = array(
+                'KodeVendor' => $res['KodeVendor'],
+                'NamaVendor' => $res['NamaVendor'],
+                'Alamat' => $res['Alamat']
+        );
+ 
         echo json_encode($data);
     }
 
