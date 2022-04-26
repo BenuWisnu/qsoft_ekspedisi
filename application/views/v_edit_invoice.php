@@ -119,11 +119,11 @@
 																			class="table table-striped table-bordered nowrap">
 																			<thead>
 																				<tr>
+																					<th>Aksi</th>
 																					<th>No. Item</th>
 																					<th>No. Invoice</th>
 																					<th>Amount</th>
 																					<th>No. Nota</th>
-																					<th>Aksi</th>
 																				</tr>
 																			</thead>
 																			<tbody>
@@ -133,13 +133,6 @@
 																						
 																								?>
 																				<tr>
-																					<td><?= $data_detail->ItemNo; ?>
-																					</td>
-																					<td><?= $data_detail->NoInvoice; ?>
-																					</td>
-																					<td><?= $data_detail->Amount; ?>
-																					</td>
-																					<td><?= $data_detail->NoNota; ?>
 																					</td>
 																					<td>
 																						<button
@@ -149,6 +142,13 @@
 																								class="feather icon-trash"></i>
 																							Hapus</button>
 																					</td>
+																					<td><?= $data_detail->ItemNo; ?>
+																					</td>
+																					<td><?= $data_detail->NoInvoice; ?>
+																					</td>
+																					<td><?= $data_detail->Amount; ?>
+																					</td>
+																					<td><?= $data_detail->NoNota; ?>
 																				</tr>
 
 																				<?php
@@ -193,7 +193,7 @@
 																					onchange="get_ekspedisi()"
 																					class="form-control form-control-round">
 
-
+																					<option value="" selected>PILIH</option>
 																					<?php foreach ($data_nota as $data_nota) { ?>
 																					<option
 																						value="<?= $data_nota->NoNota; ?>">
@@ -229,7 +229,7 @@
 																						class="form-control form-control-round"
 																						name="amount" id="amount"
 																						onkeyup="" required
-																						placeholder="Total Tagihan"
+																						placeholder="Total Tagihan" 
 																						maxlength="30"
 																						oninput="numberOnly(this.id);javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 																					<span
@@ -269,7 +269,7 @@
 								<div class="card-block">
 
 
-									<form action="<?php echo base_url('invoice/create'); ?>" method="post">
+									<form action="<?php echo base_url('invoice/update/'.$data['NoInvoice']); ?>" method="post">
 
 
 										<div class="form-group row">
@@ -406,7 +406,7 @@
 												<div class="input-group input-group-secondary input-group">
 													<input type="number" class="form-control form-control-round"
 														name="total_bayar_tujuan" id="total_bayar_tujuan"
-														placeholder="Total Bayar Tujuan" maxlength="30"
+														placeholder="Total Bayar Tujuan" maxlength="30" readonly
 														value="<?= $data['TotalTagihan']; ?>"
 														oninput="numberOnly(this.id);javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
 													<span class="input-group-addon bg-black" style="width: 220px"
@@ -424,6 +424,13 @@
 													class="feather icon-plus"></i>Simpan Data</button>
 											<a href="<?= base_url('manifest'); ?>" class="btn btn-danger btn-round"><i
 													class="feather icon-x"></i>Batalkan</a>
+											<a href="<?= base_url('invoice/cetak_invoice_1/'.$data['NoInvoice']); ?>" class="btn btn-info btn-round"><i
+											class="feather icon-printer"></i>Cetak Invoice 1</a>
+											<a href="<?= base_url('invoice/cetak_invoice_2/'.$data['NoInvoice']); ?>" class="btn btn-info btn-round"><i
+											class="feather icon-printer"></i>Cetak Invoice 2</a>
+											<a href="<?= base_url('invoice/cetak_invoice_3/'.$data['NoInvoice']); ?>" class="btn btn-info btn-round"><i
+											class="feather icon-printer"></i>Cetak Invoice 3</a>
+													
 										</div>
 
 									</form>

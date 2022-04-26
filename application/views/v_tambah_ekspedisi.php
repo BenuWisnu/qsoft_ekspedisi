@@ -62,61 +62,7 @@
 
 																</ul>
 																<!-- Tab panes -->
-																<div class="tab-content tabs card-block">
-																	<div class="tab-pane active" id="home1"
-																		role="tabpanel">
-																		<div class="form-group row">
-																			<label class="col-sm-2 col-form-label">Cari
-																				Berd. No. Nota</label>
-																			<div class="col-sm-10">
-																				<input type="text" name="pencarian"
-																					id="pencarian" required
-																					class="form-control form-control-round"
-																					placeholder="Auto Generate.."
-																					onkeyup="get_no_nota_pencarian()"
-																					value="<?= kode_otomatis("ekspedisi", "NoNota", "EKS"); ?>">
-																			</div>
-																		</div>
-																		<div class="dt-responsive table-responsive">
-																			<table id="cbtn-selectors"
-																				class="table table-striped table-bordered nowrap">
-																				<thead>
-																					<tr>
-																						<th>No.</th>
-																						<th>TTB</th>
-																						<th>Nama Pelanggan</th>
-																						<th>Tujuan</th>
-																						<th>Colly</th>
-																						<th>Berat</th>
-																						<th>Bayar Tujuan</th>
-																						<th>Bayar Handling</th>
-																						<th>Tagihan</th>
-																						<th>Aksi</th>
-																					</tr>
-																				</thead>
-																				<tbody>
-
-																				</tbody>
-																				<tfoot>
-																					<tr>
-																						<th>No.</th>
-																						<th>TTB</th>
-																						<th>Nama Pelanggan</th>
-																						<th>Tujuan</th>
-																						<th>Colly</th>
-																						<th>Berat</th>
-																						<th>Bayar Tujuan</th>
-																						<th>Bayar Handling</th>
-																						<th>Tagihan</th>
-																						<th>Aksi</th>
-																					</tr>
-																				</tfoot>
-																			</table>
-																		</div>
-																	</div>
-
-
-																</div>
+															
 															</div>
 														</div>
 														<!-- Row end -->
@@ -161,7 +107,7 @@
 														data-mask="99/99/9999" placeholder="Invoice Date"
 														value="<?= date("d/m/Y"); ?>">
 												</div>
-											</div>
+											</div> 
 
 
 
@@ -169,12 +115,12 @@
 												<label class="col-sm-2 col-form-label">Nama Vendor</label>
 												<div class="col-sm-3">
 													<input type="text" name="vendor" id="vendor"
-														class="form-control form-control-round"
-														placeholder="Nama Vendor" onkeyup="get_nama_vendor()">
+														class="form-control form-control-round" required
+														placeholder="Nama Vendor" onkeyup="get_nama_vendor()" onmouseup="get_nama_vendor()">
 												</div>
 												<div class="col-sm-3">
 													<input type="text" name="kode_vendor" id="kode_vendor"
-														class="form-control form-control-round"
+														class="form-control form-control-round" readonly
 														placeholder="Kode Vendor" onkeyup="get_kode_vendor()">
 												</div>
 
@@ -191,7 +137,7 @@
 												<div class="col-sm-4">
 													<input type="text" name="no_manifest" required
 														class="form-control form-control-round"
-														placeholder="No. Manifest/SJ">
+														placeholder="No. Manifest/SJ" onmouseup="get_nama_vendor()">
 												</div>
 												<label class="col-sm-2 col-form-label">Tanggal
 													Manifest</label>
@@ -282,7 +228,7 @@
 
 
 											<div class="j-footer">
-												<button type="submit" class="btn btn-success btn-round"><i
+												<button type="submit" id="btn_simpan" class="btn btn-success btn-round"><i
 														class="feather icon-plus"></i>Simpan Data</button>
 												<a href="<?= base_url('manifest'); ?>"
 													class="btn btn-danger btn-round"><i
@@ -301,8 +247,17 @@
 
 			</div>
 		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 		<script type="text/javascript">
+
+
+			const vendor_mouse = document.getElementById('vendor');
+
+			vendor_mouse.addEventListener('mousemove', e => {
+				get_detail_vendor();
+			});
+
 			$(document).ready(function () {
 				$("#from-datepicker").datepicker({
 					format: 'yyyy-mm-dd' //can also use format: 'dd-mm-yyyy'     
@@ -353,6 +308,13 @@
 			function get_nama_vendor() {
 				//autocomplete
 				$("#vendor").autocomplete({
+					// select: function(event, ui) {
+					// 	var origEvent = event;
+					// 	while (origEvent.originalEvent !== undefined)
+					// 		origEvent = origEvent.originalEvent;
+					// 	if (origEvent.type == 'keydown')
+					// 		$("#vendor").click();
+					// },
 					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_nama_vendor",
 					minLength: 1
 				});
@@ -442,6 +404,7 @@
 					});
 				} else {
 					$('#vendor').val("");
+					$('#kode_vendor').val("");
 					$('#alamat').val("");
 
 				}

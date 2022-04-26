@@ -89,12 +89,7 @@
         <div class="pcoded-navigatio-lavel">Pengguna</div>
         <ul class="pcoded-item pcoded-left-item">
             <?php if ($level == "ADMIN") { ?>
-            <li class="">
-                <a href="<?= base_url("belanja/add"); ?>">
-                    <span class="pcoded-micon"><i class="feather icon-plus"></i></span>
-                    <span class="pcoded-mtext">Tambah Belanja</span>
-                </a>
-            </li>
+
             <?php } ?>
             <li class="">
                 <a href="<?= base_url("pelanggan"); ?>">

@@ -78,6 +78,7 @@
 																				class="table table-striped table-bordered nowrap">
 																				<thead>
 																					<tr>
+																						<th>Aksi</th>
 																						<th>No.</th>
 																						<th>TTB</th>
 																						<th>Nama aPelanggan</th>
@@ -87,7 +88,6 @@
 																						<th>Bayar Tujuan</th>
 																						<th>Biaya Handling</th>
 																						<th>Tagihan</th>
-																						<th>Aksi</th>
 																					</tr>
 																				</thead>
 																				<tbody>
@@ -97,6 +97,14 @@
 																						
 																								?>
 																					<tr>
+																						<td>
+																							<button
+																								class="btn btn-danger btn-round text-white f-12"
+																								onclick="delete_item_nota(<?= $data_detail->id; ?>)">
+																								<i
+																									class="feather icon-trash"></i>
+																								Hapus</button>
+																						</td>
 																						<td><?= $no++; ?></td>
 																						<td><?= $data_detail->TTB; ?>
 																						</td>
@@ -113,14 +121,6 @@
 																						<td><?= $data_detail->BiayaHandling; ?>
 																						</td>
 																						<td><?= $data_detail->Tagihan; ?>
-																						</td>
-																						<td>
-																							<button
-																								class="btn btn-danger btn-round text-white f-12"
-																								onclick="delete_item_nota(<?= $data_detail->id; ?>)">
-																								<i
-																									class="feather icon-trash"></i>
-																								Hapus</button>
 																						</td>
 																					</tr>
 
@@ -190,14 +190,14 @@
 																					class="col-sm-3 col-form-label">Tujuan</label>
 																				<div class="col-sm-3">
 																					<input type="text" id="tujuan_modal"
-																						name="tujuan_modal" required
+																						name="tujuan_modal" required onmouseup="get_nama_pelanggan()"
 																						class="form-control form-control-round"
 																						placeholder="Tujuan" value="">
 																				</div>
 																				<div class="col-sm-6">
 																					<input type="text"
 																						id="alamat_tujuan_modal"
-																						name="alamat_tujuan_modal" 
+																						name="alamat_tujuan_modal" readonly
 																						class="form-control form-control-round"
 																						placeholder="Alamat Tujuan"
 																						value="">
@@ -305,7 +305,7 @@
 																						<input type="number"
 																							class="form-control form-control-round"
 																							name="harga_satuan"
-																							id="harga_satuan" 
+																							id="harga_satuan" onkeyup="hitung_harga_satuan()"
 																							required
 																							placeholder="Harga Satuan"
 																							maxlength="30" value=""
@@ -483,31 +483,32 @@
 
 
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Manifest</label>
+												<label class="col-sm-2 col-form-label">Tanggal</label>
 												<div class="col-sm-10">
-													<input type="text" id="from-datepicker" name="tanggal" required
-														class="form-control form-control-round" placeholder="Tanggal"
-														value="<?= tgl_default($data['Tanggal']); ?>">
-
+													<input type="text" name="tanggal" id="tanggal"
+														class="form-control form-control-round date"
+														data-mask="99/99/9999" placeholder="Invoice Date"
+														value="<?= tgl_default(date('Y-m-d')); ?>">
 												</div>
 											</div>
 
 
 
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Kode Vendor</label>
-												<div class="col-sm-3">
-													<input type="text" name="kode_vendor" id="kode_vendor"
-														class="form-control form-control-round"
-														placeholder="Kode Vendor" value="<?= $data['KodeVendor']; ?>"
-														onkeyup="get_kode_vendor()">
-												</div>
+												<label class="col-sm-2 col-form-label">Nama Vendor</label>
 												<div class="col-sm-3">
 													<input type="text" name="vendor" id="vendor"
-														class="form-control form-control-round" readonly
-														placeholder="Nama Vendor"
+														class="form-control form-control-round" required
+														placeholder="Nama Vendor" onkeyup="get_nama_vendor()" onmouseout="get_nama_vendor()"
 														value="<?= get_kode_table("vendor", "NamaVendor", "KodeVendor", $data['KodeVendor']); ?>">
 												</div>
+												<div class="col-sm-3">
+													<input type="text" name="kode_vendor" id="kode_vendor"
+														class="form-control form-control-round" readonly
+														placeholder="Kode Vendor" onkeyup="get_kode_vendor()"
+													    value="<?= $data['KodeVendor']; ?>">
+												</div>
+
 												<div class="col-sm-4">
 													<input type="text" name="alamat" id="alamat"
 														class="form-control form-control-round" readonly
@@ -522,15 +523,15 @@
 												<div class="col-sm-4">
 													<input type="text" name="no_manifest" required
 														class="form-control form-control-round"
-														placeholder="No. Manifest/SJ" value="<?= $data['NoSJ']; ?>">
+														placeholder="No. Manifest/SJ" value="<?= $data['NoSJ']; ?>"  onmouseup="get_nama_vendor()"  onmouseup="get_nama_vendor()">
 												</div>
 
 												<label class="col-sm-2 col-form-label">Tanggal
 													Manifest</label>
 												<div class="col-sm-4">
-													<input type="text" name="tanggal_manifest" required
-														class="form-control form-control-round"
-														placeholder="Tanggal Manifest"
+													<input type="text" name="tanggal_manifest" id="tanggal_manifest" required
+														class="form-control form-control-round date"
+														data-mask="99/99/9999" placeholder="Tanggal Manifest"
 														value="<?= tgl_default($data['TanggalSJ']); ?>">
 												</div>
 											</div>
@@ -624,6 +625,8 @@
 												<a href="<?= base_url('manifest'); ?>"
 													class="btn btn-danger btn-round"><i
 														class="feather icon-x"></i>Batalkan</a>
+											<a href="<?= base_url('ekspedisi/cetak_ekspedisi/'.$data['NoNota']); ?>" class="btn btn-info btn-round"><i
+											class="feather icon-print"></i>Cetak Manifest</a>
 											</div>
 
 										</form>
@@ -640,11 +643,17 @@
 		</div>
 
 		<script type="text/javascript">
+
 			var harga_kg = 0;
 			var harga_pickup = 0;
 			var harga_ts = 0;
 			var harga_fuso = 0;
 			var harga_satuan = 0;
+
+			const vendor_mouse = document.getElementById('vendor');
+			vendor_mouse.addEventListener('mousemove', e => {
+				get_detail_vendor();
+			});
 
 			var data_bayar_tujuan = "<?php echo $data_bayar_tujuan; ?>";
 			var data_biaya_handling = "<?php echo $data_biaya_handling; ?>";
@@ -706,6 +715,22 @@
 				get_detail_vendor();
 			}
 
+			function get_nama_vendor() {
+				//autocomplete
+				$("#vendor").autocomplete({
+					// select: function(event, ui) {
+					// 	var origEvent = event;
+					// 	while (origEvent.originalEvent !== undefined)
+					// 		origEvent = origEvent.originalEvent;
+					// 	if (origEvent.type == 'keydown')
+					// 		$("#vendor").click();
+					// },
+					source: "<?php echo base_url() ?>index.php/vendorekspedisi/get_nama_vendor",
+					minLength: 1
+				});
+
+				get_detail_vendor();
+			}
 
 			function get_vendor() {
 				//autocomplete
@@ -773,14 +798,15 @@
 			}
 
 			function get_detail_vendor() {
-				var kode = $("#kode_vendor").val();
+				var kode = $("#vendor").val();
 				if (kode != "") {
 					$.ajax({
-						url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor",
+						url: "<?php echo base_url()?>index.php/vendorekspedisi/get_detail_vendor_berd_nama",
 						data: "kode=" + kode,
 						success: function (data) {
 							var json = data,
 								obj = JSON.parse(json);
+							$('#kode_vendor').val(obj.KodeVendor);
 							$('#vendor').val(obj.NamaVendor);
 							$('#alamat').val(obj.Alamat);
 
@@ -789,11 +815,13 @@
 					});
 				} else {
 					$('#vendor').val("");
+					$('#kode_vendor').val("");
 					$('#alamat').val("");
 
 				}
 
 			}
+
 
 			function get_detail_pelanggan() {
 				var kode = $("#pelanggan").val();
@@ -810,6 +838,11 @@
 
 						}
 					});
+				}
+				else {
+					$('#tujuan_modal').val(""); 
+					$('#alamat_tujuan_modal').val(""); 
+
 				}
 
 			}
@@ -878,20 +911,20 @@
 					document.getElementById('banyak').disabled = true;
 					document.getElementById('berat').disabled = false;
 					$('#harga_satuan').val(parseInt(harga_kg));
-					document.getElementById('span_harga_satuan_modal').innerHTML = harga_kg;
+					document.getElementById('span_harga_satuan_modal').innerHTML = get_rupiah(harga_kg);
 
 				} else if (val == 'Pickup') {
 					document.getElementById('banyak').disabled = false;
 					$('#harga_satuan').val(parseInt(harga_pickup));
-					document.getElementById('span_harga_satuan_modal').innerHTML = harga_pickup;
+					document.getElementById('span_harga_satuan_modal').innerHTML = get_rupiah(harga_pickup);
 				} else if (val == 'TS') {
 					document.getElementById('banyak').disabled = false;
 					$('#harga_satuan').val(parseInt(harga_ts));
-					document.getElementById('span_harga_satuan_modal').innerHTML = harga_ts;
+					document.getElementById('span_harga_satuan_modal').innerHTML = get_rupiah(harga_ts);
 				} else if (val == 'Fuso') {
 					document.getElementById('banyak').disabled = false;
 					$('#harga_satuan').val(parseInt(harga_fuso));
-					document.getElementById('span_harga_satuan_modal').innerHTML = harga_fuso;
+					document.getElementById('span_harga_satuan_modal').innerHTML = get_rupiah(harga_fuso);
 				}
 
 				console.log(parseInt(harga_kg));
@@ -904,14 +937,33 @@
 
 				var berat = parseInt($("#berat").val());
 				var harga_satuan = parseInt($("#harga_satuan").val());
+				var jenis_harga = $("#jenis_harga").val();
 
-				var hasil = berat * harga_satuan;
+				if (jenis_harga != "KG") {
+					var hasil = berat * harga_satuan;
 
-				$("#total_biaya_handling_modal").val(hasil);
-				$("#total_tagihan_modal").val(hasil);
+					$("#total_biaya_handling_modal").val(hasil);
+					$("#total_tagihan_modal").val(hasil);
 
-				document.getElementById('span_total_biaya_handling_modal').innerHTML = get_rupiah(hasil);
-				document.getElementById('span_total_tagihan_modal').innerHTML = get_rupiah(hasil);
+					document.getElementById('span_total_biaya_handling_modal').innerHTML = get_rupiah(hasil);
+					document.getElementById('span_total_tagihan_modal').innerHTML = get_rupiah(hasil);
+
+				}
+
+
+			}
+
+			function hitung_harga_satuan() {
+
+				var harga_satuan = parseInt($("#harga_satuan").val());
+
+				if (harga_satuan != "") {
+					document.getElementById('span_harga_satuan_modal').innerHTML = get_rupiah(harga_satuan);
+				}
+				else {
+					document.getElementById('span_harga_satuan_modal').innerHTML = get_rupiah(0);
+				}
+
 
 			}
 
