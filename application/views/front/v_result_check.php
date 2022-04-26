@@ -28,7 +28,7 @@
           <p>Anda dapat menghubungi Pihak Admin bila paket yang telusuri tidak dapat ditemukan.</p>
       </div>
     
-    <?php }
+    <?php } 
 
     else { ?>
 
@@ -44,8 +44,8 @@
                   <th scope="col">Tujuan</th>
                   <th scope="col">Sopir</th>
                   <th scope="col">Biaya Ongkir</th>
-                  <th scope="col">Status</th>
-                </tr>
+                  <th scope="col"></th>
+                </tr> 
               </thead>
               <tbody>
                 <?php foreach ($data as $data) {
@@ -54,12 +54,12 @@
                     <th scope="row"><?= $no++; ?></th>
                     <td><?= $data->NoNota; ?></td>
                     <td>REG</td>
-                    <td><?= $data->Tanggal; ?></td>
+                    <td><?= tgl_default($data->Tanggal); ?></td>
                     <td><?= $data->Kapal; ?></td>
                     <td><?= $data->DaerahTujuan; ?></td>
                     <td><?= $data->Sopir; ?></td>
-                    <td><?= $data->TotalBayarTujuan; ?></td>
-                    <td>OTW</td>
+                    <td><?= rupiah($data->TotalBayarTujuan); ?></td>
+                    <td><a href="<?= base_url('check/cetak_ekspedisi/'.$data->NoNota); ?>" class="btn btn-success">Detail</a></td>
                   </tr>
 
 
