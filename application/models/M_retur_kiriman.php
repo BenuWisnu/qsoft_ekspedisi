@@ -11,6 +11,13 @@ class M_retur_kiriman extends CI_Model {
     }
 
     public function get_all() {
+        $this->db->order_by($this->id, "DESC");
+        return $this->db->get($this->table)->result();
+    }
+
+    public function get_all_limit($limit) {
+        $this->db->order_by($this->id, "DESC");
+        $this->db->limit($limit);
         return $this->db->get($this->table)->result();
     }
 

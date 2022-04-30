@@ -26,7 +26,7 @@ Class Auth extends CI_Controller{
             $test     = password_verify($password, $password);
             // query chek users
             $this->db->where('KodePemakai', $email);
-            $this->db->where('KataSandi',  $password);
+            $this->db->where('KataKunci',  MD5($password));
 
             $users       = $this->db->get('pemakai');
             

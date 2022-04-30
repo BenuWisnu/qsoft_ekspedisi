@@ -15,7 +15,24 @@ class Ekspedisi extends CI_Controller
 
     public function index()
     {
+        $data['var_status'] = 'ALL';
         $data['data_ekspedisi'] = $this->m_ekspedisi->get_all();
+        $this->template->load('template', 'v_daftar_ekspedisi', $data);
+    }
+
+    public function filter_data()
+    {
+
+        $tanggal1 = $this->input->post('tanggal1');
+        $tanggal2 = $this->input->post('tanggal2');
+        $status = $this->input->post('status');
+
+        if ($status == "") {
+            $status = "ALL";
+        }
+        $data['var_status'] = $status;
+
+        $data['data_ekspedisi'] = $this->m_ekspedisi->filter_data($status, $tanggal1, $tanggal2);
         $this->template->load('template', 'v_daftar_ekspedisi', $data);
     }
     
@@ -136,7 +153,7 @@ class Ekspedisi extends CI_Controller
                 );
         $this->m_ekspedisi->insert_detail($data);
         $this->session->set_flashdata('success', "Berhasil");
-        redirect('ekspedisi/edit/'.$no_nota);
+        redirect('ekspedisi/edit/'.$no_nota); 
     }
 
 
@@ -295,6 +312,93 @@ class Ekspedisi extends CI_Controller
             $pdf->Cell(30, 7, $data->Colly, 1, 0, 'L');
             $pdf->Cell(30, 7, $data->Berat, 1, 0, 'L');
             $pdf->Cell(40, 7, $data->Keterangan, 1, 1, 'L');
+            $no++;
+        }
+
+
+       
+
+      
+
+        $pdf->Output('ekspedisi-file.pdf', 'I');
+    }
+
+    public function cetak_ekspedisi_berdasarkan_tanggal()
+    {
+ 
+        $tanggal1 = $this->input->post('tanggal1');
+        $tanggal2 = $this->input->post('tanggal2');
+
+        $data_ekspedisi = $this->m_ekspedisi->filter_data("", $tanggal1, $tanggal2);
+
+        //DATA PERUSAHAAN
+        $data_nama_perusahaan = $this->m_pengaturan->get_by_id(1);
+        $data_alamat_perusahaan = $this->m_pengaturan->get_by_id(2);
+        $data_telpon_perusahaan = $this->m_pengaturan->get_by_id(11);
+        $no = 1;
+
+     
+
+        $this->load->library('pdf');
+        $pdf = new FPDF('P', 'mm', array(295,295));
+        // membuat nama file
+
+        // membuat halaman baru
+        $pdf->AddPage();
+        // setting jenis font yang akan digunakan
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->SetTitle('Data Manifest');
+
+        $pdf->Image('http://localhost/qsoft/assets/images/png/logo_web.png', 22, 5, 30);
+        //$pdf->Image('', a)
+        // mencetak string
+        $pdf->Cell(268, 7, $tanggal1, 0, 1, 'C');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(268, 7, $data_alamat_perusahaan['Nilai'], 0, 1, 'C');
+        $pdf->Cell(268, 7, $data_telpon_perusahaan['Nilai'], 0, 1, 'C');
+        $pdf->Line(10, 35, 293-10, 35);
+        $pdf->Line(10, 35.5, 293-10, 35.5);
+        $pdf->Cell(7, 7, '', 0, 1);
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->Cell(268, 7, 'DATA KIRIMAN', 0, 1, 'C');
+
+
+
+        
+
+
+        //tabel data pasien
+        $pdf->Cell(10, 10, 'Daftar Kiriman', 0, 1);
+
+        
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(10, 7, 'No.', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'No Nota', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'Tgl. SJ', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'No. SJ', 1, 0, 'C');
+        $pdf->Cell(20, 7, 'TTB', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'Penerima', 1, 0, 'C');
+        $pdf->Cell(10, 7, 'Colly', 1, 0, 'C');
+        $pdf->Cell(10, 7, 'Berat', 1, 0, 'C');
+        $pdf->Cell(35, 7, 'Total Bayar Tujuan', 1, 0, 'C');
+        $pdf->Cell(35, 7, 'Total Biaya Handling', 1, 0, 'C');
+        $pdf->Cell(35, 7, 'Total Tagihan', 1, 1, 'C');
+
+        
+        foreach ($data_ekspedisi as $data) {
+
+            $pdf->SetFont('Arial', '', 7);
+            $pdf->Cell(10, 7, $no, 1, 0, 'C');
+            $pdf->Cell(30, 7, $data->NoNota, 1, 0, 'L');
+            $pdf->Cell(30, 7, tgl_dan_hari(substr($data->TanggalSJ, 0, 2)).tgl_default($data->TanggalSJ), 1, 0, 'L');
+            $pdf->Cell(30, 7, $data->NoSJ, 1, 0, 'L');
+            $pdf->Cell(20, 7, $data->TTB, 1, 0, 'L');
+            $pdf->Cell(30, 7, get_kode_table("pelanggan", "NamaPelanggan", "KodePelanggan", $data->NoSJ), 1, 0, 'L');
+            $pdf->Cell(10, 7, $data->Colly, 1, 0, 'L');
+            $pdf->Cell(10, 7, $data->Berat, 1, 0, 'L');
+            $pdf->Cell(35, 7, rupiah($data->TotalBayarTujuan), 1, 0, 'L');
+            $pdf->Cell(35, 7, rupiah($data->TotalBiayaHandling), 1, 0, 'L');
+            $pdf->Cell(35, 7, rupiah($data->TagihanTotal), 1, 1, 'L');
             $no++;
         }
 

@@ -1,5 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+
 
 class Invoice extends CI_Controller
 {
@@ -11,6 +19,33 @@ class Invoice extends CI_Controller
         $this->load->model('m_ekspedisi');
         $this->load->model('m_bank');
         $this->load->model('m_pengaturan');
+        require 'vendor/autoload.php'; // load folder vendor/autoload
+
+    }
+
+    public function cetak_qrcode($id) {
+        $result = Builder::create()
+        ->writer(new PngWriter())
+        ->writerOptions([])
+        ->data($id)
+        ->encoding(new Encoding('UTF-8'))
+        ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+        ->size(300)
+        ->margin(10)
+        ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+        ->labelText($id)
+        ->labelFont(new NotoSans(20))
+        ->labelAlignment(new LabelAlignmentCenter())
+        ->build();
+
+        // Directlycetak_qrcode output the QR code
+
+        // Save it to a file
+        $result->saveToFile(('assets/qrcode/'.$id.'.png'));
+
+        // Generate a data URI to include image data inline (i.e. inside an <img> tag)
+        return $dataUri = $result->getDataUri();
+
     }
 
     public function index()
@@ -175,7 +210,6 @@ class Invoice extends CI_Controller
     public function cetak_invoice_1($id)
     {
 
-        require 'vendor/autoload.php'; // load folder vendor/autoload
         $data_invoice = $this->m_invoice->get_by_id($id);
         $data_invoice_detail = $this->m_invoice->get_all_detail($id);
     
@@ -188,7 +222,7 @@ class Invoice extends CI_Controller
         $no = 1;
     
          
-    
+        
         $this->load->library('pdf');
         $pdf = new FPDF('P', 'mm', array(295,295));
         // membuat nama file
@@ -217,12 +251,15 @@ class Invoice extends CI_Controller
     
         $pdf->Cell(1, 7, '', 0, 0, 'L');
         $pdf->Cell(30, 7, 'Tanggal', 0, 0, 'L');
-        $pdf->Cell(80, 7, '', 0, 0, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+        $pdf->Cell(80, 7, '', 0, 0, 'L'); 
     
 
         $pdf->SetFont('Arial', 'B', 24);
         $pdf->Cell(20, 7, 'INVOICE', 0, 0, 'L');
 
+        //CETAK QR CODE
+        $this->cetak_qrcode($id);
+        $pdf->Image('http://localhost/qsoft/assets/qrcode/'.$id.".png", 250, 60, 30);
             
 
         $pdf->SetFont('Arial', '', 12);
@@ -230,7 +267,7 @@ class Invoice extends CI_Controller
         $pdf->Cell(1, 7, '', 0, 0, 'L');
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->Cell(30, 7, tgl_dan_hari(substr($data_invoice['Tanggal'], 0, 2))."".tgl_default($data_invoice['Tanggal']), 0, 0, 'L');
-        $pdf->Cell(80, 7, '', 0, 1, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+        $pdf->Cell(80, 7, '', 0, 1, 'L'); 
             
 
         //LINE INVOICE
@@ -347,8 +384,7 @@ class Invoice extends CI_Controller
         $pdf->Cell(120, 7, 'Administrator', 0, 0, 'L');
         $pdf->Cell(30, 7, '', 0, 1, 'L');
         
-        // $qrCode = new Endroid\QrCode\QrCode(123); // mengambil data kode siswa sebagai data  QR code
-        // $this->$qrCode->writeFile('./QRcode/.png'); // direktori untuk menyimpan gambar QR code
+        
         
 
         //LINE INVOICE
@@ -402,12 +438,17 @@ class Invoice extends CI_Controller
     
         $pdf->Cell(1, 7, '', 0, 0, 'L');
         $pdf->Cell(30, 7, 'Tanggal', 0, 0, 'L');
-        $pdf->Cell(80, 7, '', 0, 0, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+        $pdf->Cell(80, 7, '', 0, 0, 'L'); 
     
 
         $pdf->SetFont('Arial', 'B', 24);
         $pdf->Cell(20, 7, 'INVOICE', 0, 0, 'L');
 
+
+        //CETAK QR CODE
+        $this->cetak_qrcode($id);
+        $pdf->Image('http://localhost/qsoft/assets/qrcode/'.$id.".png", 250, 60, 30);
+            
             
 
         $pdf->SetFont('Arial', '', 12);
@@ -415,7 +456,7 @@ class Invoice extends CI_Controller
         $pdf->Cell(1, 7, '', 0, 0, 'L');
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->Cell(30, 7, tgl_dan_hari(substr($data_invoice['Tanggal'], 0, 2))."".tgl_default($data_invoice['Tanggal']), 0, 0, 'L');
-        $pdf->Cell(80, 7, '', 0, 1, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+        $pdf->Cell(80, 7, '', 0, 1, 'L'); 
             
 
         //LINE INVOICE
@@ -586,7 +627,7 @@ class Invoice extends CI_Controller
     
         $pdf->Cell(1, 7, '', 0, 0, 'L');
         $pdf->Cell(30, 7, 'Tanggal', 0, 0, 'L');
-        $pdf->Cell(80, 7, '', 0, 0, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+        $pdf->Cell(80, 7, '', 0, 0, 'L'); 
     
 
         $pdf->SetFont('Arial', 'B', 24);
@@ -599,7 +640,7 @@ class Invoice extends CI_Controller
         $pdf->Cell(1, 7, '', 0, 0, 'L');
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->Cell(30, 7, tgl_default($data_invoice['Tanggal']), 0, 0, 'L');
-        $pdf->Cell(80, 7, '', 0, 1, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+        $pdf->Cell(80, 7, '', 0, 1, 'L'); 
             
 
         //LINE INVOICE

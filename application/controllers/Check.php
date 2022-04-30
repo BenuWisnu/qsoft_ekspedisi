@@ -116,7 +116,7 @@ class Check extends CI_Controller {
 	
 			$pdf->Cell(1, 7, '', 0, 0, 'L');
 			$pdf->Cell(30, 7, 'Tgl. Manifest', 0, 0, 'L');
-			$pdf->Cell(80, 7, ': '.tgl_dan_hari(substr($data_ekspedisi['TanggalSJ'], 0, 2))."".tgl_default($data_ekspedisi['TanggalSJ']), 0, 0, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+			$pdf->Cell(80, 7, ': '.tgl_dan_hari(substr($data_ekspedisi['TanggalSJ'], 0, 2))."".tgl_default($data_ekspedisi['TanggalSJ']), 0, 0, 'L'); 
 	
 			$pdf->Cell(20, 7, 'Sopir', 0, 0, 'L');
 			$pdf->Cell(80, 7, ': '.$data_ekspedisi['Sopir'], 0, 0, 'L');
@@ -128,7 +128,7 @@ class Check extends CI_Controller {
 			
 			$pdf->Cell(1, 7, '', 0, 0, 'L');
 			$pdf->Cell(30, 7, 'Kapal', 0, 0, 'L');
-			$pdf->Cell(80, 7, ': '.$data_ekspedisi['Kapal'], 0, 0, 'L'); //90 merupakan jarak antara no_rekamedis dengan isian ditangani oleh
+			$pdf->Cell(80, 7, ': '.$data_ekspedisi['Kapal'], 0, 0, 'L'); 
 	
 			$pdf->Cell(20, 7, 'HP Sopir', 0, 0, 'L');
 			$pdf->Cell(80, 7, ': '.$data_ekspedisi['NoTelponSopir'], 0, 0, 'L');

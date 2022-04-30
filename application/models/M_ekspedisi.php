@@ -28,6 +28,11 @@ class M_ekspedisi extends CI_Model {
         return $this->db->query($query)->result();
     } 
 
+    public function filter_data($status, $tanggal1, $tanggal2) {
+        $query = "select *from $this->view where Tanggal between '$tanggal1' and '$tanggal2'";
+        return $this->db->query($query)->result();
+    } 
+
     public function get_by_id($id) {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row_array();

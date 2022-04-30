@@ -219,8 +219,8 @@
                                                                             ?>
                                                                         <tr>
                                                                             <td><?= $no++; ?></td>
-                                                                            <td><?= $hari.", ".tgl_default(substr($data->Tanggal, 0, 11)); ?></td>
-                                                                            <td><?= $hari_tt.", ".tgl_default(substr($data->TanggalTambah, 0, 11)); ?></td>
+                                                                            <td><?= $hari.tgl_default(substr($data->Tanggal, 0, 11)); ?></td>
+                                                                            <td><?= $hari_tt.tgl_default(substr($data->TanggalTambah, 0, 11)); ?></td>
                                                                             <td><?= $data->UserTambah; ?></td>
                                                                             <td><?= rupiah($data->Subtotal); ?></td>
                                                                             <td><?= $data->NoNota; ?></td>
@@ -250,7 +250,7 @@
                                                     <!-- HTML5 Export Buttons table start -->
                                                     <div class="card">
                                                         <div class="card-header table-card-header">
-                                                            <h5>Daftar Invoice</h5> <br>
+                                                            <h5>Daftar Retur Kiriman</h5> <br>
                                                         </div>
                                                         <div class="card-block">
                                                             <div class="dt-responsive table-responsive">

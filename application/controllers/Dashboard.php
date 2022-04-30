@@ -26,8 +26,8 @@ class Dashboard extends CI_Controller
         $data = $this->m_admin->get_by_id($id_admin);
         $this->session->set_userdata($data);
 
-        $data['data_pembayaran'] = $this->m_pembayaran->get_all();
-        $data['data_retur_kiriman'] = $this->m_retur_kiriman->get_all();
+        $data['data_pembayaran'] = $this->m_pembayaran->get_all_limit(10); 
+        $data['data_retur_kiriman'] = $this->m_retur_kiriman->get_all_limit(10);
 
         $data['total_pelanggan'] = get_total_data_table("pelanggan");
         $data['total_vendor'] = get_total_data_table("vendor");

@@ -17,6 +17,12 @@ class M_pembayaran extends CI_Model {
         return $this->db->get($this->view)->result();
     }
 
+    public function get_all_limit($limit) {
+        $this->db->order_by($this->id, "DESC");
+        $this->db->limit($limit);
+        return $this->db->get($this->view)->result();
+    }
+
     public function get_all_detail($id) {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table_detail)->result();

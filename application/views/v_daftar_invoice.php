@@ -67,9 +67,13 @@
 													?>
 												<tr>
 													<td>
+													
 														<a class="btn btn-success btn-round text-white f-12"
 															href="<?= base_url('invoice/edit/'.$data->NoInvoice); ?>"><i
 																class="feather icon-edit-2"></i> Edit</a>
+														<a class="btn btn-info btn-round text-white f-12"
+															href="<?= base_url('invoice/cetak_invoice_1/'.$data->NoInvoice); ?>"><i
+																class="feather icon-printer"></i> Cetak</a>
 														<button class="btn btn-danger btn-round text-white f-12"
 															onclick="ConfirmDialog(<?= $data->NoInvoice; ?>)">
 															<i class="feather icon-trash"></i> Hapus</button>
@@ -124,7 +128,7 @@
 		if (x) {
 			window.location = url + "invoice/delete/" + id;
 		} else {
-			return false;
+			return false; 
 		}
 	}
 

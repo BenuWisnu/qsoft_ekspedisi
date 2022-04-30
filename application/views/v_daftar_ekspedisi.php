@@ -1,4 +1,20 @@
 
+<?php
+
+if (isset($_GET['tanggal1'])) {
+	$tanggal1 = $_GET['tanggal1'];
+}
+else {
+	$tanggal1 = '0000-00-00';
+}
+
+if (isset($_GET['tanggal2'])) {
+	$tanggal2 = $_GET['tanggal2'];
+}
+else {
+	$tanggal2 = '0000-00-00';
+}
+?>
 <div class="pcoded-content">
 	<div class="pcoded-inner-content">
 		<!-- Main-body start -->
@@ -37,6 +53,53 @@
 								<div class="card-header table-card-header">
 									<h5>Daftar Manifest</h5> <br>
 									<!-- <span>Daftar siswa yang sudah melakukan registrasi pembuatan kartu.</span> -->
+									<form action="<?= base_url('ekspedisi/filter_data'); ?>" method="post">
+                     
+					 <div class="row">
+						 <div class="col-sm-2">
+										 <div class="form-group">
+											 <label>Pilih Status Invoice</label>
+												 <select class="form-control" name="status" id="status">
+													 <option value="<?= $var_status; ?>" selected><?= $var_status; ?></option>
+													 <option value="ALL">ALL</option>
+													 <option value="OPEN">OPEN</option>
+													 <option value="CLOSED">CLOSED</option>
+												 </select>
+										 </div>
+									 </div>
+									 
+									 <div class="col-sm-2">
+										 <div class="form-group">
+											 <label>Pilih Tanggal 1</label> 
+												 <input type="date" class="form-control" name="tanggal1" id="tanggal1">
+										 </div>
+									 </div>
+									 <div class="col-sm-2">
+										 <div class="form-group">
+											 <label>Pilih Tanggal 2</label>
+												 <input type="date" class="form-control" name="tanggal2" id="tanggal2">
+										 </div>
+									 </div>
+								
+
+  
+
+									 <div class="col-sm-8">
+										 <div class="form-group">
+											 <button type="submit" class="btn btn-success btn-round">FILTER DATA</button>
+											 <a href="<?= base_url('ekspedisi/cetak_ekspedisi_berdasarkan_tanggal/'.$tanggal1.'/'.$tanggal2); ?>" class="btn btn-info btn-round">CETAK REPORT</a>
+											 <a href="<?= base_url('ekspedisi'); ?>" class="btn btn-danger btn-round">RESET PENCARIAN</a>
+										 </div>
+									 </div>
+									 
+				 </div>
+	  
+
+
+
+
+	 
+			 </form>
 								</div>
 								<div class="card-block">
 									<div class="dt-responsive table-responsive">
@@ -48,7 +111,7 @@
 													<th>Cabang</th>
 													<th>Tanggal</th>
 													<th>No. Nota</th>
-													<th>No. Invoice</th>
+													<th>No. Invoice</th> 
 													<th>Tgl. SJ</th>
 													<th>Kode Vendor</th>
 													<th>Nama Vendor</th>
@@ -59,16 +122,19 @@
 											</thead>
 											<tbody>
 												<?php
-												$no = 1;
-												foreach ($data_ekspedisi as $data) {
-													$hari = tgl_dan_hari(substr($data->Tanggal, 0, 11));
-													$hari_sj = tgl_dan_hari(substr($data->TanggalSJ, 0, 11));
-											
-													?>
+                                                $no = 1;
+                                                foreach ($data_ekspedisi as $data) {
+                                                    $hari = tgl_dan_hari(substr($data->Tanggal, 0, 11));
+                                                    $hari_sj = tgl_dan_hari(substr($data->TanggalSJ, 0, 11)); ?>
 												<tr>
 													<td>
 															<a class="btn btn-success btn-round text-white f-12"
 															href="<?= base_url('ekspedisi/edit/'.$data->NoNota); ?>"><i class="feather icon-edit-2"></i> Edit</a>
+
+														<a class="btn btn-info btn-round text-white f-12"
+															href="<?= base_url('ekspedisi/cetak_ekspedisi/'.$data->NoNota); ?>"><i
+																class="feather icon-printer"></i> Cetak</a>
+
 														<button class="btn btn-danger btn-round text-white f-12" onclick="ConfirmDialog(<?= $data->NoNota; ?>)">
 														<i class="feather icon-trash"></i> Hapus</button>
 													</td>
@@ -80,13 +146,13 @@
 													<td><?= $hari_sj.tgl_default(substr($data->TanggalSJ, 0, 11)); ?></td>
 													<td><?= $data->KodeVendor; ?></td>
 													<td><?= $data->NamaVendor; ?></td>
-													<td><?= $data->TotalBayarTujuan; ?></td>
-													<td><?= $data->TotalBiayaHandling; ?></td>
-													<td><?= $data->TagihanTotal; ?></td>
+													<td><?= rupiah($data->TotalBayarTujuan); ?></td>
+													<td><?= rupiah($data->TotalBiayaHandling); ?></td>
+													<td><?= rupiah($data->TagihanTotal); ?></td>
 												</tr>
 												
 												<?php
-                                                                    }
+                                                }
 
                                                                     ?>
 											</tbody>
